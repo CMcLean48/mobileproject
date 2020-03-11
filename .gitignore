@@ -1,14 +1,14 @@
 stocks/node_modules/**/*
 stocks/.expo/*
-npm-debug.*
+stocks/npm-debug.*
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
 *.orig.*
-web-build/
-web-report/
+stocks/web-build/
+stocks/web-report/
 
 # macOS
 .DS_Store
