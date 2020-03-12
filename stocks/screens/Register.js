@@ -1,3 +1,4 @@
-const Register = ({ route }) => {};
-
+const Register = ({ route }) => {
+	return null;
+};
 export default Register;
