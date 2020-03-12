@@ -9,6 +9,10 @@ export default function Home({ navigation }) {
 				title="Register"
 				onPress={() => navigation.navigate('Register')}
 			/>
+			<Button
+				title="Login"
+				onPress={() => navigation.navigate('Login')}
+			/>
 			<Text>Open up App.js to start working on your app!!</Text>
 		</View>
 	);
