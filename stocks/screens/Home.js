@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import FormGenerator from './Register';
+import { StyleSheet, Text, View , Button} from 'react-native';
+
 
 export default function Home({ navigation }) {
 	return (
 		<View style={styles.container}>
 			<Button
-				title="register"
+				title="Register"
 				onPress={() => navigation.navigate('Register')}
 			/>
 			<Text>Open up App.js to start working on your app!!</Text>
