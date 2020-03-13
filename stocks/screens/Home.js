@@ -4,11 +4,11 @@ import finnhub from '../api/finnhub';
 
 const Home = () => {
   
-  const TOKEN = ""; //Add HERE your API-Key
+  const API_KEY = ""; //Add HERE your API-Key
 
   const [stocks, setStocks] = useState([]);
   const searchAPI = async () => {
-    const response = await finnhub.get('/stock/symbol?exchange=US&token=' + TOKEN, {});
+    const response = await finnhub.get('/stock/symbol?exchange=US&token=' + API_KEY, {});
     setStocks(response.data);
   }
 
