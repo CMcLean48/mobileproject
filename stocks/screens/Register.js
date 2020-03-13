@@ -25,7 +25,7 @@ const validationSchema = Yup.object().shape({
 		.required('Confirm Password is required')
 });
 
-export default class Signup extends React.Component {
+export default class Register extends React.Component {
 	goToLogin = () => this.props.navigation.navigate('Login');
 
 	handleSubmit = values => {
