@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import ErrorMessage from '../components/ErrorMessage';
+import firebase from '../firebase';
 
 const validationSchema = Yup.object().shape({
 	name: Yup.string()
@@ -31,8 +32,15 @@ export default class Register extends React.Component {
 	handleSubmit = values => {
 		if (values.email.length > 0 && values.password.length > 0) {
 			setTimeout(() => {
-			//	this.props.navigation.navigate('App');
-			alert(JSON.stringify(values));
+				firebase
+					.auth()
+					.createUserWithEmailAndPassword(USERNAME, PASSWORD)
+					.then(response => {
+						alert('User Registered - ' + response.user.email);
+					})
+					.catch(error => alert('Firebase Register Error: ' + error));
+				//	this.props.navigation.navigate('App');
+				//alert(JSON.stringify(values));
 			}, 3000);
 		}
 	};
