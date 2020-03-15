@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import ErrorMessage from '../components/ErrorMessage';
+import firebase from '../firebase';
 
 const validationSchema = Yup.object().shape({
 	email: Yup.string()
@@ -24,8 +25,15 @@ export default class Login extends React.Component {
 	handleSubmit = values => {
 		if (values.email.length > 0 && values.password.length > 0) {
 			setTimeout(() => {
-                //this.props.navigation.navigate('App');
-                alert(JSON.stringify(values));
+				firebase
+					.auth()
+					.signInWithEmailAndPassword(values.email, values.password)
+					.then(response =>
+						alert('Signed In User: ' + response.user.email)
+					)
+					.catch(error => alert('Firebase Login Error: ' + error));
+				//this.props.navigation.navigate('App');
+				// alert(JSON.stringify(values));
 			}, 3000);
 		}
 	};

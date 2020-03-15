@@ -34,7 +34,10 @@ export default class Register extends React.Component {
 			setTimeout(() => {
 				firebase
 					.auth()
-					.createUserWithEmailAndPassword(USERNAME, PASSWORD)
+					.createUserWithEmailAndPassword(
+						values.email,
+						values.password
+					)
 					.then(response => {
 						alert('User Registered - ' + response.user.email);
 					})
