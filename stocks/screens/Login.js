@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, navigation } from 'react';
 import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
+
 import ErrorMessage from '../components/ErrorMessage';
 import firebase from '../firebase';
 
@@ -29,7 +30,8 @@ export default class Login extends React.Component {
 					.auth()
 					.signInWithEmailAndPassword(values.email, values.password)
 					.then(response =>
-						alert('Signed In User: ' + response.user.email)
+						alert('Signed In User: ' + response.user.email),
+						this.props.navigation.navigate('Portfolio')
 					)
 					.catch(error => alert('Firebase Login Error: ' + error));
 				//this.props.navigation.navigate('App');

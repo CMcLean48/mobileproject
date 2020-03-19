@@ -9,10 +9,10 @@ import ErrorMessage from '../components/ErrorMessage';
 import firebase from '../firebase';
 
 const validationSchema = Yup.object().shape({
-	name: Yup.string()
-		.label('Name')
-		.required()
-		.min(2, 'Must have at least 2 characters'),
+	// name: Yup.string()
+	// 	.label('Name')
+	// 	.required()
+	// 	.min(2, 'Must have at least 2 characters'),
 	email: Yup.string()
 		.label('Email')
 		.email('Enter a valid email')
@@ -74,7 +74,7 @@ export default class Register extends React.Component {
 						isSubmitting
 					}) => (
 						<Fragment>
-							<FormInput
+							{/* <FormInput
 								name="name"
 								value={values.name}
 								onChangeText={handleChange('name')}
@@ -86,7 +86,7 @@ export default class Register extends React.Component {
 							/>
 							<ErrorMessage
 								errorValue={touched.name && errors.name}
-							/>
+							/> */}
 							<FormInput
 								name="email"
 								value={values.email}
