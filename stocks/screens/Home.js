@@ -9,6 +9,7 @@ import {AsyncStorage} from 'react-native'
 import finnhub from "../api/finnhub";
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
+import { getProvidesAudioData } from "expo/build/AR";
 
 
 
@@ -27,6 +28,7 @@ export default function Home({ navigation }) {
   const [stocks, setStocks] = useState([]);
   const [query, setQuery] = useState("");
   const [JWT, setJWT] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false)
 
   const searchAPI = async () => {
     //console.log("CALL");
@@ -45,12 +47,28 @@ export default function Home({ navigation }) {
         // We have data!!
         console.log(value);
         setJWT(value)
+        setLoggedIn(true)
       }
     } catch (error) {
       // Error retrieving data
     }
   };
 
+  function getData() {
+    fetch("https://ssdstockappapi.azurewebsites.net/api/Example/secure", {
+      method: 'GET',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${JWT}`
+      }
+  })
+  .then(res => res.json())
+  // Data Retrieved.
+  .then((data) => {
+      alert(JSON.stringify(data));
+  })
+  }
 
 
   return (
@@ -68,7 +86,8 @@ export default function Home({ navigation }) {
         title="Register"
         onPress={() => navigation.navigate("Register")}
       />
-      {!JWT && <Button title="Login" onPress={() => navigation.navigate("Login")} />}
+      {!loggedIn && <Button title="Login" onPress={() => navigation.navigate("Login")} />}
+      {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
     </SafeAreaView>
   );
 }
