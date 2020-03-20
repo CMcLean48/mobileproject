@@ -5,15 +5,28 @@ import {
   SafeAreaView,
   Button
 } from "react-native";
+import {AsyncStorage} from 'react-native'
 import finnhub from "../api/finnhub";
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
 
-export default function Home({ navigation }) {
-  const API_KEY = ""; //Add HERE your API-Key
 
+
+export default function Home({ navigation }) {
+
+  useEffect(() => {
+    searchAPI();
+  }, []);
+
+  useEffect(() => {
+    retrieveData();
+  }, [navigation])
+
+
+  const API_KEY = ""; //Add HERE your API-Key
   const [stocks, setStocks] = useState([]);
   const [query, setQuery] = useState("");
+  const [JWT, setJWT] = useState("");
 
   const searchAPI = async () => {
     //console.log("CALL");
@@ -24,9 +37,21 @@ export default function Home({ navigation }) {
     setStocks(response.data);
   };
 
-  useEffect(() => {
-    searchAPI();
-  }, []);
+  retrieveData = async () => {
+    try {
+      console.log("inside retrive data")
+      const value = await AsyncStorage.getItem('JWT_TOKEN');
+      if (value !== null) {
+        // We have data!!
+        console.log(value);
+        setJWT(value)
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,7 +68,7 @@ export default function Home({ navigation }) {
         title="Register"
         onPress={() => navigation.navigate("Register")}
       />
-      <Button title="Login" onPress={() => navigation.navigate("Login")} />
+      {!JWT && <Button title="Login" onPress={() => navigation.navigate("Login")} />}
     </SafeAreaView>
   );
 }

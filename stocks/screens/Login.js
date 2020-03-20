@@ -3,6 +3,7 @@ import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import {AsyncStorage} from 'react-native'
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import ErrorMessage from '../components/ErrorMessage';
@@ -19,32 +20,38 @@ const validationSchema = Yup.object().shape({
 		.min(4, 'Password must have more than 4 characters ')
 });
 
-export default class Login extends React.Component {
-	goToSignup = () => this.props.navigation.navigate('Register');
+export default function Login( { navigation } ) {
+	goToSignup = () => navigation.navigate('Register');
 
-	handleSubmit = values => {
+	async function _storeData(token)  {
+		try {
+		  await AsyncStorage.setItem('JWT_TOKEN', token);
+		} catch (error) {
+			console.error(error)
+		}
+	  };
+
+	async function handleSubmit (values) {
 		if (values.email.length > 0 && values.password.length > 0) {
-			setTimeout(() => {
+			await setTimeout(() => {
 				firebase
 					.auth()
 					.signInWithEmailAndPassword(values.email, values.password)
-					.then(response =>
-						alert('Signed In User: ' + response.user.email)
-					)
 					.catch(error => alert('Firebase Login Error: ' + error));
 				//this.props.navigation.navigate('App');
 				// alert(JSON.stringify(values));
 			}, 3000);
+			await firebase.auth().currentUser.getIdTokenResult().then(response => {_storeData(response.token);})
+			alert("you are now logged in");
 		}
 	};
 
-	render() {
 		return (
 			<SafeAreaView style={styles.container}>
 				<Formik
 					initialValues={{ email: '', password: '' }}
 					onSubmit={values => {
-						this.handleSubmit(values);
+						handleSubmit(values);
 					}}
 					validationSchema={validationSchema}
 				>
@@ -101,7 +108,7 @@ export default class Login extends React.Component {
 				</Formik>
 				<Button
 					title="Don't have an account? Please Register"
-					onPress={this.goToSignup}
+					onPress={goToSignup}
 					titleStyle={{
 						color: '#F57C00'
 					}}
@@ -109,7 +116,6 @@ export default class Login extends React.Component {
 				/>
 			</SafeAreaView>
 		);
-	}
 }
 
 const styles = StyleSheet.create({

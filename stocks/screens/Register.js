@@ -26,8 +26,8 @@ const validationSchema = Yup.object().shape({
 		.required('Confirm Password is required')
 });
 
-export default class Register extends React.Component {
-	goToLogin = () => this.props.navigation.navigate('Login');
+export default function Register({ navigation }) {
+	goToLogin = () => navigation.navigate('Login');
 
 	handleSubmit = values => {
 		if (values.email.length > 0 && values.password.length > 0) {
@@ -47,8 +47,6 @@ export default class Register extends React.Component {
 			}, 3000);
 		}
 	};
-
-	render() {
 		return (
 			<SafeAreaView style={styles.container}>
 				<Formik
@@ -153,7 +151,6 @@ export default class Register extends React.Component {
 			</SafeAreaView>
 		);
 	}
-}
 
 const styles = StyleSheet.create({
 	container: {
