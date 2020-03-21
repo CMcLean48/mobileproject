@@ -31,20 +31,25 @@ export default function Login( { navigation } ) {
 		}
 	  };
 
-	async function handleSubmit (values) {
+	  async function handleSubmit(values) {
 		if (values.email.length > 0 && values.password.length > 0) {
-			await setTimeout(() => {
+		  await setTimeout(() => {
+			firebase
+			  .auth()
+			  .signInWithEmailAndPassword(values.email, values.password)
+			  .then(response => {
 				firebase
-					.auth()
-					.signInWithEmailAndPassword(values.email, values.password)
-					.catch(error => alert('Firebase Login Error: ' + error));
-				//this.props.navigation.navigate('App');
-				// alert(JSON.stringify(values));
-			}, 3000);
-			await firebase.auth().currentUser.getIdTokenResult().then(response => {_storeData(response.token);})
-			alert("you are now logged in");
+				  .auth()
+				  .currentUser.getIdTokenResult()
+				  .then(tokenResponse => _storeData(tokenResponse.token))
+				  .catch(error => alert("Firebase Token Retrival Error: " + error));
+			  })
+			  .catch(error => alert("Firebase Login Error: " + error));
+		  }, 3000);
+		  alert("you are now logged in");
+		  navigation.navigate('Stocks');
 		}
-	};
+	  }
 
 		return (
 			<SafeAreaView style={styles.container}>
