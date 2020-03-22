@@ -28,6 +28,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Register({ navigation }) {
+  
 	const goToLogin = () => navigation.navigate('Login');
 	async function _storeData(token) {
 		try {
@@ -36,6 +37,7 @@ export default function Register({ navigation }) {
 			console.error(error);
 		}
 	}
+
 
 	async function handleSubmit(values) {
 		if (values.email.length > 0 && values.password.length > 0) {

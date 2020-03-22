@@ -11,7 +11,7 @@ const Stack = createStackNavigator();
 const App = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator>
+			<Stack.Navigator initialRouteName="Stocks">
 				<Stack.Screen name="Stocks" component={Home} />
 					<Stack.Screen name="Register" component={Register} />
 					<Stack.Screen name="Login" component={Login} />
@@ -20,5 +20,7 @@ const App = () => {
 		</NavigationContainer>
 	);
 };
+
+
 
 export default App;
