@@ -1,14 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, Button } from 'react-native';
-import finnhub from '../api/finnhub';
-import SearchBar from '../components/SearchBar';
-import ShowList from '../components/ShowList';
-import Logout from '../components/Logout';
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  Button
+} from "react-native";
+import {AsyncStorage} from 'react-native'
+import finnhub from "../api/finnhub";
+import SearchBar from "../components/SearchBar";
+import ShowList from "../components/ShowList";
+import { getProvidesAudioData } from "expo/build/AR";
 
-import firebase from '../firebase';
+
 
 export default function Home({ navigation }) {
-	const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //Add HERE your API-Key
+
+	const API_KEY = ''; //Add HERE your API-Key
 
 	const [stocks, setStocks] = useState([]);
 	const [query, setQuery] = useState('');
@@ -61,6 +68,7 @@ export default function Home({ navigation }) {
 			/>
 		</SafeAreaView>
 	);
+
 }
 
 const styles = StyleSheet.create({

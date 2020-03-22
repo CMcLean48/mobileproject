@@ -11,6 +11,7 @@ import ShowList from "./components/ShowList";
 const Stack = createStackNavigator();
 
 const App = () => {
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -23,6 +24,9 @@ const App = () => {
       </Stack.Navigator>
     </NavigationContainer>
   );
+
 };
+
+
 
 export default App;

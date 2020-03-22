@@ -1,3 +1,4 @@
+
 import React, { Fragment, navigation } from "react";
 import { StyleSheet, SafeAreaView, View } from "react-native";
 import { Button } from "react-native-elements";
@@ -6,6 +7,8 @@ import * as Yup from "yup";
 import FormInput from "../components/FormInput";
 import FormButton from "../components/FormButton";
 import { AsyncStorage } from "react-native";
+
+
 
 import ErrorMessage from "../components/ErrorMessage";
 import firebase from "../firebase";
@@ -120,7 +123,6 @@ export default function Login({ navigation }) {
       />
     </SafeAreaView>
   );
-}
 
 const styles = StyleSheet.create({
   container: {
