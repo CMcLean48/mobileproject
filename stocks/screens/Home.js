@@ -4,7 +4,6 @@ import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
-import { getProvidesAudioData } from "expo/build/AR";
 
 export default function Home({ navigation }) {
   useEffect(() => {
@@ -23,7 +22,7 @@ export default function Home({ navigation }) {
 
   retrieveData = async () => {
     try {
-      console.log("inside retrive data");
+     // console.log("inside retrive data");
       const value = await AsyncStorage.getItem("JWT_TOKEN");
       if (value !== null) {
         // We have data!!
