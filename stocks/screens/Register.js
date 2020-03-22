@@ -28,7 +28,6 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Register({ navigation }) {
-
   const goToLogin = () => navigation.navigate("Login");
   async function _storeData(token) {
     try {
@@ -155,8 +154,6 @@ export default function Register({ navigation }) {
       />
     </SafeAreaView>
   );
-  
-
 }
 
 const styles = StyleSheet.create({

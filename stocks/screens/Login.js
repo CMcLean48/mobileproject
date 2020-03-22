@@ -1,14 +1,11 @@
-
 import React, { Fragment, navigation } from "react";
 import { StyleSheet, SafeAreaView, View } from "react-native";
 import { Button } from "react-native-elements";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { AsyncStorage } from "react-native";
 import FormInput from "../components/FormInput";
 import FormButton from "../components/FormButton";
-import { AsyncStorage } from "react-native";
-
-
 
 import ErrorMessage from "../components/ErrorMessage";
 import firebase from "../firebase";
@@ -25,7 +22,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Login({ navigation }) {
-  const goToSignup = () => navigation.navigate("Register");
+  goToSignup = () => navigation.navigate("Register");
 
   async function _storeData(token) {
     try {
@@ -34,29 +31,27 @@ export default function Login({ navigation }) {
       console.error(error);
     }
   }
+
   async function handleSubmit(values) {
     if (values.email.length > 0 && values.password.length > 0) {
       await setTimeout(() => {
         firebase
           .auth()
           .signInWithEmailAndPassword(values.email, values.password)
-          .then(
-            response => alert("Signed In User: " + response.user.email),
-            navigation.navigate("Portfolio")
-          )
+          .then(response => {
+            firebase
+              .auth()
+              .currentUser.getIdTokenResult()
+              .then(tokenResponse => _storeData(tokenResponse.token))
+              .catch(error => alert("Firebase Token Retrival Error: " + error));
+          })
           .catch(error => alert("Firebase Login Error: " + error));
-
-        // alert(JSON.stringify(values));
       }, 3000);
-      await firebase
-        .auth()
-        .currentUser.getIdTokenResult()
-        .then(response => {
-          _storeData(response.token);
-        });
       alert("you are now logged in");
+      navigation.navigate("Stocks");
     }
   }
+
   return (
     <SafeAreaView style={styles.container}>
       <Formik
@@ -123,6 +118,7 @@ export default function Login({ navigation }) {
       />
     </SafeAreaView>
   );
+}
 
 const styles = StyleSheet.create({
   container: {
