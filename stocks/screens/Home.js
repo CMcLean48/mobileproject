@@ -30,15 +30,6 @@ export default function Home({ navigation }) {
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false)
 
-  const searchAPI = async () => {
-    //console.log("CALL");
-    const response = await finnhub.get(
-      "/stock/symbol?exchange=US&token=" + API_KEY,
-      {}
-    );
-    setStocks(response.data);
-  };
-
   retrieveData = async () => {
     try {
       console.log("inside retrive data")
@@ -93,10 +84,10 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
 });

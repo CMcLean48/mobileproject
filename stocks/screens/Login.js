@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, navigation } from 'react';
 import { StyleSheet, SafeAreaView, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import { Formik } from 'formik';
@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import {AsyncStorage} from 'react-native'
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
+import { AsyncStorage } from 'react-native';
+
 import ErrorMessage from '../components/ErrorMessage';
 import firebase from '../firebase';
 
