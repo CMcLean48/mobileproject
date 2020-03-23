@@ -38,17 +38,20 @@ export default function Login({ navigation }) {
         firebase
           .auth()
           .signInWithEmailAndPassword(values.email, values.password)
-          .then(response => {
-            firebase
-              .auth()
-              .currentUser.getIdTokenResult()
-              .then(tokenResponse => _storeData(tokenResponse.token))
-              .catch(error => alert("Firebase Token Retrival Error: " + error));
-          })
           .catch(error => alert("Firebase Login Error: " + error));
       }, 3000);
-      alert("you are now logged in");
-      navigation.navigate("Stocks");
+      await setTimeout(() => {
+      firebase
+        .auth()
+        .currentUser.getIdTokenResult()
+        .then(tokenResponse => {_storeData(tokenResponse.token)
+          console.log(tokenResponse.token)
+        })
+        .catch(error => alert("Firebase Token Retrival Error: " + error))
+        .then(
+          navigation.navigate("Stocks")
+        );
+      }, 3000);
     }
   }
 

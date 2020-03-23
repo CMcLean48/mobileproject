@@ -4,6 +4,7 @@ import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
+import Logout from "../components/Logout";
 import { getProvidesAudioData } from "expo/build/AR";
 
 export default function Home({ navigation }) {
@@ -61,6 +62,10 @@ export default function Home({ navigation }) {
       });
   }
 
+  function getLoggedIn(boolean){
+    setLoggedIn(boolean)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       {/* <Text>TEST</Text> */}
@@ -78,14 +83,15 @@ export default function Home({ navigation }) {
             stock.description.toUpperCase().includes(query.toUpperCase())
         )}
       />
-      <Button
+      {!loggedIn && <Button
         title="Register"
         onPress={() => navigation.navigate("Register")}
-      />
+      /> }
       {!loggedIn && (
         <Button title="Login" onPress={() => navigation.navigate("Login")} />
       )}
       {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
+      {loggedIn && <Logout getLoggedIn={getLoggedIn}/>}
     </SafeAreaView>
   );
 }
