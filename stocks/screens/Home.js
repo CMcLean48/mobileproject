@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
 import { AsyncStorage } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import finnhub from "../api/finnhub";
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
 import Logout from "../components/Logout";
-import { getProvidesAudioData } from "expo/build/AR";
 
 export default function Home({ navigation }) {
   useEffect(() => {
     searchAPI();
   }, []);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     retrieveData();
-  }, [navigation]);
+  });
 
   const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
   const [stocks, setStocks] = useState([]);
@@ -25,7 +25,7 @@ export default function Home({ navigation }) {
   retrieveData = async () => {
     try {
       console.log("inside retrive data");
-      const value = await AsyncStorage.getItem("JWT_TOKEN");
+      let value = await AsyncStorage.getItem("JWT_TOKEN");
       if (value !== null) {
         // We have data!!
         console.log(value);

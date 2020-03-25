@@ -1,4 +1,4 @@
-import React, { Fragment, navigation } from "react";
+import React, { Fragment } from "react";
 import { StyleSheet, SafeAreaView, View } from "react-native";
 import { Button } from "react-native-elements";
 import { Formik } from "formik";
@@ -38,9 +38,8 @@ export default function Login({ navigation }) {
         firebase
           .auth()
           .signInWithEmailAndPassword(values.email, values.password)
-          .catch(error => alert("Firebase Login Error: " + error));
-      }, 3000);
-      await setTimeout(() => {
+          .catch(error => alert("Firebase Login Error: " + error))
+          .then(() => {
       firebase
         .auth()
         .currentUser.getIdTokenResult()
@@ -51,6 +50,7 @@ export default function Login({ navigation }) {
         .then(
           navigation.navigate("Stocks")
         );
+        });
       }, 3000);
     }
   }
