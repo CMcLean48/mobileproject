@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, Text, View, Dimensions } from 'react-native';
+import {
+	StyleSheet,
+	SafeAreaView,
+	Text,
+	View,
+	Button,
+	Dimensions
+} from 'react-native';
 import finnhub from '../api/finnhub';
 import { LineChart } from 'react-native-chart-kit';
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
-
 
 const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
 
@@ -47,14 +53,14 @@ export default function Detail({ route, navigation }) {
 		console.log('candle ' + candle.c);
 	}
 	const lineData = {
-		labels: ['  week 2', 'week 1', 'current week'],
+		labels: ['week 2', 'week 1', 'current week'],
 		datasets: [
 			{
 				data: candle.c,
 				strokeWidth: 4 // optional
 			}
 		],
-		legend: ['closing price  ']
+		legend: ['closing price over 3 weeks  ']
 	};
 	const chartConfig = {
 		backgroundColor: '#e26a00',
@@ -85,9 +91,7 @@ export default function Detail({ route, navigation }) {
 				/>
 			</View>
 			<SafeAreaView style={styles.container}>
-				<Text style={styles.symbol}>
-					Stock: {route.params.stock}
-				</Text>
+				<Text style={styles.symbol}>Stock: {route.params.stock}</Text>
 				<View style={styles.quote}>
 					<Text style={styles.qt}>open:${quote.o}</Text>
 					<Text style={styles.qt}>close:${quote.c}</Text>
@@ -95,6 +99,19 @@ export default function Detail({ route, navigation }) {
 					<Text style={styles.qt}>low:${quote.l}</Text>
 					<Text style={styles.qt}>previous close:${quote.pc}</Text>
 				</View>
+				<Button title="Watch Stock" onPress={() => watchStock()} />
+				<Button
+					title="Watched Stocks"
+					onPress={() => navigation.navigate('WatchList')}
+				/>
+				<Button
+					title="Portfolio"
+					onPress={() => navigation.navigate('Portfolio')}
+				/>
+
+				<Button title="Buy" onPress={() => buyStock()} />
+
+				<Button title="Sell" onPress={() => sellStock()} />
 			</SafeAreaView>
 		</>
 	);
@@ -109,11 +126,11 @@ const styles = StyleSheet.create({
 		//	justifyContent: 'center'
 	},
 	symbol: {
-		paddingTop:20,
+		paddingTop: 20,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		color: '#fff',
-		fontSize:25
+		fontSize: 25
 	},
 	quote: {
 		flexDirection: 'row',
