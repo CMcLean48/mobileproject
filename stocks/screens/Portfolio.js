@@ -55,9 +55,7 @@ export default function Portfolio({ navigation }) {
 	  );
 
 	const [json, setjson] = useState({
-		userEmail: "Loading",
-		stockHoldings: [
-		]
+		userEmail: "Loading"
 	  })
 
 
@@ -68,7 +66,7 @@ export default function Portfolio({ navigation }) {
 			<Text>{json.userEmail}</Text>
 			{!!json.cashBalance && <Text>Cash Balance: $ {json.cashBalance} CAD</Text>}
 			{!!json.currentPortfolioValue && <Text>Portfolio Value: $ {json.currentPortfolioValue} CAD</Text>}
-			{!!json.stockHoldings.map((stock) => {
+			{!!json.stockHoldings && json.stockHoldings.map((stock) => {
 				return ( <SafeAreaView key={stock.stockSymbol}>
 				<Text>{stock.companyName} | {stock.stockSymbol}</Text>
 						<Text>Total Value: {stock.currentValue}</Text>
