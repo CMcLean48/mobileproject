@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import finnhub from '../api/finnhub';
+import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from '../components/SearchBar';
 import ShowList from '../components/ShowList';
 
@@ -14,7 +15,7 @@ export default function Home({ navigation }) {
 		retrieveData();
 	}, [navigation]);
 
-	const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //Add HERE your API-Key
+	const API_KEY = FINNHUB_API_KEY; //Add HERE your API-Key
 	const [stocks, setStocks] = useState([]);
 	const [query, setQuery] = useState('');
 	const [JWT, setJWT] = useState('');

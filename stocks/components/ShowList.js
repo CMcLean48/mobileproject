@@ -9,7 +9,7 @@ export default function ShowList({ navigation, stocks }) {
   // };
 
   function showDetail(symbol) {
-    alert(symbol);
+   // alert(symbol);
 
     //Navigate to Stock Detail w/ Params
     navigation.navigate("Stock Detail", { stock: symbol });
