@@ -5,6 +5,7 @@ import finnhub from '../api/finnhub';
 import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from '../components/SearchBar';
 import ShowList from '../components/ShowList';
+import Logout from '../components/Logout';
 
 export default function Home({ navigation }) {
 	useEffect(() => {
