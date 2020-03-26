@@ -61,42 +61,39 @@ export default function Home({ navigation }) {
 			});
 	}
 
-	return (
-		<SafeAreaView style={styles.container}>
-			{/* <Text>TEST</Text> */}
-			<SearchBar
-				query={query}
-				onQueryChange={newQuery => {
-					setQuery(newQuery);
-				}}
-			/>
-			<ShowList
-				navigation={navigation}
-				stocks={stocks.filter(
-					stock =>
-						stock.symbol
-							.toUpperCase()
-							.includes(query.toUpperCase()) ||
-						stock.description
-							.toUpperCase()
-							.includes(query.toUpperCase())
-				)}
-			/>
-			<Button
-				title="Register"
-				onPress={() => navigation.navigate('Register')}
-			/>
-			{!loggedIn && (
-				<Button
-					title="Login"
-					onPress={() => navigation.navigate('Login')}
-				/>
-			)}
-			{loggedIn && (
-				<Button title="Get Secure Data" onPress={() => getData()} />
-			)}
-		</SafeAreaView>
-	);
+  function getLoggedIn(boolean){
+    setLoggedIn(boolean)
+  }
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* <Text>TEST</Text> */}
+      <SearchBar
+        query={query}
+        onQueryChange={newQuery => {
+          setQuery(newQuery);
+        }}
+      />
+      <ShowList
+        navigation={navigation}
+        stocks={stocks.filter(
+          stock =>
+            stock.symbol.toUpperCase().includes(query.toUpperCase()) ||
+            stock.description.toUpperCase().includes(query.toUpperCase())
+        )}
+      />
+      {!loggedIn && <Button
+        title="Register"
+        onPress={() => navigation.navigate("Register")}
+      /> }
+      {!loggedIn && (
+        <Button title="Login" onPress={() => navigation.navigate("Login")} />
+      )}
+      {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
+      {loggedIn && <Logout getLoggedIn={getLoggedIn}/>}
+      {loggedIn && <Button title="Portfolio" onPress={() => goToPortfolio()} />}
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
