@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, Text, View, Dimensions } from 'react-native';
 import finnhub from '../api/finnhub';
 import { LineChart } from 'react-native-chart-kit';
-import { FINNHUB_API_KEY } from 'react-native-dotenv';
-import { Row } from 'native-base';
+//import { FINNHUB_API_KEY } from 'react-native-dotenv';
 
-const API_KEY = FINNHUB_API_KEY; //API Key - This should probably be moved to a central file later
+
+const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
 
 export default function Detail({ route, navigation }) {
 	const [quote, setQuote] = useState(null);

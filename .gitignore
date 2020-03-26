@@ -2,7 +2,6 @@ stocks/node_modules/**/*
 stocks/.expo/*
 stocks/npm-debug.*
 
-.env
 *.jks
 *.p8
 *.p12
