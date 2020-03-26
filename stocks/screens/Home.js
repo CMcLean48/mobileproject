@@ -22,13 +22,14 @@ export default function Home({ navigation }) {
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
+  goToPortfolio = () => navigation.navigate("Portfolio");
+
+
   retrieveData = async () => {
     try {
-      console.log("inside retrive data");
       let value = await AsyncStorage.getItem("JWT_TOKEN");
       if (value !== null) {
         // We have data!!
-        console.log(value);
         setJWT(value);
         setLoggedIn(true);
       }
@@ -92,6 +93,7 @@ export default function Home({ navigation }) {
       )}
       {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
       {loggedIn && <Logout getLoggedIn={getLoggedIn}/>}
+      {loggedIn && <Button title="Portfolio" onPress={() => goToPortfolio()} />}
     </SafeAreaView>
   );
 }
