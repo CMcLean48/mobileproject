@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, Button } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import finnhub from '../api/finnhub';
-import { FINNHUB_API_KEY } from 'react-native-dotenv';
+//import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from '../components/SearchBar';
 import ShowList from '../components/ShowList';
 import Logout from '../components/Logout';
@@ -16,7 +16,7 @@ export default function Home({ navigation }) {
 		retrieveData();
 	}, [navigation]);
 
-	const API_KEY = FINNHUB_API_KEY; //Add HERE your API-Key
+	const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //Add HERE your API-Key
 	const [stocks, setStocks] = useState([]);
 	const [query, setQuery] = useState('');
 	const [JWT, setJWT] = useState('');
@@ -62,39 +62,52 @@ export default function Home({ navigation }) {
 			});
 	}
 
-  function getLoggedIn(boolean){
-    setLoggedIn(boolean)
-  }
+	function getLoggedIn(boolean) {
+		setLoggedIn(boolean);
+	}
 
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* <Text>TEST</Text> */}
-      <SearchBar
-        query={query}
-        onQueryChange={newQuery => {
-          setQuery(newQuery);
-        }}
-      />
-      <ShowList
-        navigation={navigation}
-        stocks={stocks.filter(
-          stock =>
-            stock.symbol.toUpperCase().includes(query.toUpperCase()) ||
-            stock.description.toUpperCase().includes(query.toUpperCase())
-        )}
-      />
-      {!loggedIn && <Button
-        title="Register"
-        onPress={() => navigation.navigate("Register")}
-      /> }
-      {!loggedIn && (
-        <Button title="Login" onPress={() => navigation.navigate("Login")} />
-      )}
-      {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
-      {loggedIn && <Logout getLoggedIn={getLoggedIn}/>}
-      {loggedIn && <Button title="Portfolio" onPress={() => goToPortfolio()} />}
-    </SafeAreaView>
-  );
+	return (
+		<SafeAreaView style={styles.container}>
+			{/* <Text>TEST</Text> */}
+			<SearchBar
+				query={query}
+				onQueryChange={newQuery => {
+					setQuery(newQuery);
+				}}
+			/>
+			<ShowList
+				navigation={navigation}
+				stocks={stocks.filter(
+					stock =>
+						stock.symbol
+							.toUpperCase()
+							.includes(query.toUpperCase()) ||
+						stock.description
+							.toUpperCase()
+							.includes(query.toUpperCase())
+				)}
+			/>
+			{!loggedIn && (
+				<Button
+					title="Register"
+					onPress={() => navigation.navigate('Register')}
+				/>
+			)}
+			{!loggedIn && (
+				<Button
+					title="Login"
+					onPress={() => navigation.navigate('Login')}
+				/>
+			)}
+			{loggedIn && (
+				<Button title="Get Secure Data" onPress={() => getData()} />
+			)}
+			{loggedIn && <Logout getLoggedIn={getLoggedIn} />}
+			{loggedIn && (
+				<Button title="Portfolio" onPress={() => goToPortfolio()} />
+			)}
+		</SafeAreaView>
+	);
 }
 
 const styles = StyleSheet.create({
