@@ -12,7 +12,41 @@ export default function Portfolio({ navigation }) {
 		React.useCallback(() => {
 		  let isActive = true;
 
-		  getData(isActive);
+		  async function getJWT() {
+			try {
+			  console.log("inside retrive data");
+			  let value = await AsyncStorage.getItem("JWT_TOKEN");
+			  if (value !== null) {
+				// We have data!!
+				console.log(value);
+				return value;
+			  }
+			} catch (error) {
+			  // Error retrieving data
+			  console.error(error);
+			}
+		  }
+		  async function getData(isActive) {
+			if (isActive) {
+			  fetch("https://ssdstockappapi.azurewebsites.net/api/Portfolio", {
+				method: "GET",
+				headers: {
+				  Authorization: `Bearer ${await getJWT()}`
+				}
+			  })
+				.then(res => res.json())
+				.then(data => {
+				  setjson(data);
+				})
+				.catch(error => {
+				  console.log(error);
+				});
+			}
+		  }
+
+
+
+		  getData(isActive).catch(e => {console.error(error)})
 
 		  return () => {
 			isActive = false;
@@ -20,53 +54,40 @@ export default function Portfolio({ navigation }) {
 		}, [])
 	  );
 
-	const [JWT, setJWT] = useState("")
+	const [json, setjson] = useState({
+		userEmail: "Loading"
+	  })
 
-	async function getJWT() {
-		try {
-			console.log("inside retrive data");
-			let value = await AsyncStorage.getItem("JWT_TOKEN");
-			if (value !== null) {
-			  // We have data!!
-			  setJWT(value)
-			  console.log(value)
-		  	}
-		  } catch (error) {
-			// Error retrieving data
-			console.error(error)
-		  }
-		}
+	return(
+		<SafeAreaView style={styles.container}>
+			<Text>{json.userEmail}</Text>
+			{!!json.cashBalance && <Text>Cash Balance: $ {json.cashBalance} USD</Text>}
+			{!!json.currentPortfolioValue && <Text>Portfolio Value: $ {json.currentPortfolioValue} CAD</Text>}
+			{!!json.stockHoldings && json.stockHoldings.map((stock) => {
+				return ( <SafeAreaView key={stock.stockSymbol} style={styles.stocks}>
+				<Text style={styles.bold}>{stock.companyName} | {stock.stockSymbol}</Text>
+						<Text>Total Value: {stock.currentValue}</Text>
+						<Text>Stock Price: {stock.currentPrice}</Text>
+						<Text>Quantity: {stock.quantity}</Text>
 
-	async function getData(isActive) {
-		if(isActive){
-		getJWT().then(() => {
-		fetch("https://ssdstockappapi.azurewebsites.net/api/Portfolio", {
-		  method: "GET",
-		  headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json",
-			Authorization: `Bearer ${JWT}`
-		  }
-		})
-		  .then(res => { res.json(); })
-		  // Data Retrieved.
-		  .then(data => {
-			alert(data);
-		  })
-		  .catch((error) => {
-			console.error('Error:', error);
-		  });
-		})
-	}
-	  }
-
-
-
-	//console.log(user);
-
-	return (
-		<>
-			<Text>Portfolio</Text>
-		</>
-	);
+						</SafeAreaView>
+					)
+			})}
+		</SafeAreaView>);
 }
+
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  backgroundColor: "#fff",
+	  alignItems: "center",
+	  justifyContent: "center"
+	},
+	stocks: {
+		alignItems: "center"
+	},
+	bold: {
+		paddingTop: 10,
+		fontWeight: "bold"
+	}
+  });
