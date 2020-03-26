@@ -58,17 +58,14 @@ export default function Portfolio({ navigation }) {
 		userEmail: "Loading"
 	  })
 
-
-	console.log(json)
-
 	return(
-		<>
+		<SafeAreaView style={styles.container}>
 			<Text>{json.userEmail}</Text>
-			{!!json.cashBalance && <Text>Cash Balance: $ {json.cashBalance} CAD</Text>}
+			{!!json.cashBalance && <Text>Cash Balance: $ {json.cashBalance} USD</Text>}
 			{!!json.currentPortfolioValue && <Text>Portfolio Value: $ {json.currentPortfolioValue} CAD</Text>}
 			{!!json.stockHoldings && json.stockHoldings.map((stock) => {
-				return ( <SafeAreaView key={stock.stockSymbol}>
-				<Text>{stock.companyName} | {stock.stockSymbol}</Text>
+				return ( <SafeAreaView key={stock.stockSymbol} style={styles.stocks}>
+				<Text style={styles.bold}>{stock.companyName} | {stock.stockSymbol}</Text>
 						<Text>Total Value: {stock.currentValue}</Text>
 						<Text>Stock Price: {stock.currentPrice}</Text>
 						<Text>Quantity: {stock.quantity}</Text>
@@ -76,5 +73,21 @@ export default function Portfolio({ navigation }) {
 						</SafeAreaView>
 					)
 			})}
-		</>);
+		</SafeAreaView>);
 }
+
+const styles = StyleSheet.create({
+	container: {
+	  flex: 1,
+	  backgroundColor: "#fff",
+	  alignItems: "center",
+	  justifyContent: "center"
+	},
+	stocks: {
+		alignItems: "center"
+	},
+	bold: {
+		paddingTop: 10,
+		fontWeight: "bold"
+	}
+  });
