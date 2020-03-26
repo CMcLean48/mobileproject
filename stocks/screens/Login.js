@@ -22,7 +22,7 @@ const validationSchema = Yup.object().shape({
 });
 
 export default function Login({ navigation }) {
-  goToSignup = () => navigation.navigate("Register");
+  const goToSignup = () => navigation.navigate("Register");
 
   async function _storeData(token) {
     try {
