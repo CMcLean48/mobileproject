@@ -12,6 +12,7 @@ import finnhub from '../api/finnhub';
 import { LineChart } from 'react-native-chart-kit';
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
 
+
 const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
 
 export default function Detail({ route, navigation }) {
@@ -76,23 +77,26 @@ export default function Detail({ route, navigation }) {
 
 	return (
 		<>
-			<View>
-				<Text>{route.params.stock}</Text>
-				<LineChart
-					data={lineData}
-					width={Dimensions.get('window').width} // from react-native
-					height={240}
-					yAxisLabel={'$'}
-					chartConfig={chartConfig}
-					bezier
-					style={{
-						marginVertical: 8,
-						borderRadius: 16
-					}}
-				/>
-			</View>
 			<SafeAreaView style={styles.container}>
+				<View>
+					<Text>{route.params.stock}</Text>
+					<LineChart
+						data={lineData}
+						width={Dimensions.get('window').width} // from react-native
+						height={240}
+						yAxisLabel={'$'}
+						chartConfig={chartConfig}
+						bezier
+						style={{
+							
+							marginVertical: 8,
+							borderRadius: 16
+						}}
+					/>
+				</View>
+
 				<Text style={styles.symbol}>Stock: {route.params.stock}</Text>
+				
 				<View style={styles.quote}>
 					<Text style={styles.qt}>open:${quote.o}</Text>
 					<Text style={styles.qt}>close:${quote.c}</Text>
@@ -100,36 +104,33 @@ export default function Detail({ route, navigation }) {
 					<Text style={styles.qt}>low:${quote.l}</Text>
 					<Text style={styles.qt}>previous close:${quote.pc}</Text>
 				</View>
+				<View style={styles.btns}>
+					<Button 
+						title="Register"
+						onPress={() => navigation.navigate('Register')}
+					/>
 
-				<Button
-					title="Register"
-					onPress={() => navigation.navigate('Register')}
-				/>
+					<Button
+						title="Login"
+						onPress={() => navigation.navigate('Login')}
+					/>
 
-				<Button
-					title="Login"
-					onPress={() => navigation.navigate('Login')}
-				/>
+					<Button
+						title="Portfolio"
+						onPress={() => navigation.navigate('Portfolio')}
+					/>
 
-				<Button
-					title="Portfolio"
-					onPress={() => navigation.navigate('Portfolio')}
-				/>
+					<Button title="Watch Stock" onPress={() => watchStock()} />
 
-				<Button title="Watch Stock" onPress={() => watchStock()} />
+					<Button
+						title="Watched Stocks"
+						onPress={() => navigation.navigate('WatchList')}
+					/>
 
-				<Button
-					title="Watched Stocks"
-					onPress={() => navigation.navigate('WatchList')}
-				/>
+					<Button title="Buy" onPress={() => buyStock()} />
 
-				<Button
-					title="Portfolio"
-					onPress={() => navigation.navigate('Portfolio')}
-				/>
-				<Button title="Buy" onPress={() => buyStock()} />
-
-				<Button title="Sell" onPress={() => sellStock()} />
+					<Button title="Sell" onPress={() => sellStock()} />
+				</View>
 			</SafeAreaView>
 		</>
 	);
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
 		//	justifyContent: 'center'
 	},
 	symbol: {
-		paddingTop: 20,
+		paddingTop: 10,
 		alignItems: 'center',
 		justifyContent: 'flex-start',
 		color: '#fff',
@@ -154,13 +155,17 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		justifyContent: 'center',
-		paddingTop: 40
+		paddingTop: 10
 	},
 	qt: {
 		color: '#fff',
 		fontSize: 20,
 		justifyContent: 'space-between',
 		paddingRight: 20,
-		paddingTop: 20
+		paddingTop: 10
+	},
+	btns: {
+		flexDirection: 'row',
+		flexWrap: 'wrap'
 	}
 });
