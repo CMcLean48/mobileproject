@@ -29,6 +29,8 @@ const validationSchema = Yup.object().shape({
 
 export default function Register({ navigation }) {
 	const goToLogin = () => navigation.navigate('Login');
+	const API_CREATE_URL =  "https://ssdstockappapi.azurewebsites.net/api/User/create";
+	
 	async function _storeData(token) {
 		try {
 			await AsyncStorage.setItem('JWT_TOKEN', token);
