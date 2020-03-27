@@ -15,26 +15,8 @@ import { LineChart } from 'react-native-chart-kit';
 const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
 
 export default function Detail({ route, navigation }) {
-
 	const [quote, setQuote] = useState(null);
 	const [candle, setCandle] = useState(null);
-	const [JWT, setJWT] = useState('');
-	const [loggedIn, setLoggedIn] = useState(false);
-
-	retrieveData = async () => {
-		try {
-			// console.log("inside retrive data");
-			const value = await AsyncStorage.getItem('JWT_TOKEN');
-			if (value !== null) {
-				// We have data!!
-				console.log(value);
-				setJWT(value);
-				setLoggedIn(true);
-			}
-		} catch (error) {
-			// Error retrieving data
-		}
-	};
 
 	const searchAPI = async () => {
 		const response = await finnhub.get(
@@ -118,45 +100,36 @@ export default function Detail({ route, navigation }) {
 					<Text style={styles.qt}>low:${quote.l}</Text>
 					<Text style={styles.qt}>previous close:${quote.pc}</Text>
 				</View>
-				{!loggedIn && (
-					<Button
-						title="Register"
-						onPress={() => navigation.navigate('Register')}
-					/>
-				)}
-				{!loggedIn && (
-					<Button
-						title="Login"
-						onPress={() => navigation.navigate('Login')}
-					/>
-				)}
-				{loggedIn && (
-					<Button
-						title="Portfolio"
-						onPress={() => navigation.navigate('Portfolio')}
-					/>
-				)}
-				{loggedIn && (
+
+				<Button
+					title="Register"
+					onPress={() => navigation.navigate('Register')}
+				/>
+
+				<Button
+					title="Login"
+					onPress={() => navigation.navigate('Login')}
+				/>
+
+				<Button
+					title="Portfolio"
+					onPress={() => navigation.navigate('Portfolio')}
+				/>
+
 				<Button title="Watch Stock" onPress={() => watchStock()} />
-				)}
-				{loggedIn && (
+
 				<Button
 					title="Watched Stocks"
 					onPress={() => navigation.navigate('WatchList')}
 				/>
-				)}
-				{loggedIn && (
+
 				<Button
 					title="Portfolio"
-				onPress={() => navigation.navigate('Portfolio')}
+					onPress={() => navigation.navigate('Portfolio')}
 				/>
-				)}
-				{loggedIn && (
 				<Button title="Buy" onPress={() => buyStock()} />
-				)}
-				{loggedIn && (
+
 				<Button title="Sell" onPress={() => sellStock()} />
-				)}
 			</SafeAreaView>
 		</>
 	);
