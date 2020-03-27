@@ -57,7 +57,7 @@ export default function Detail({ route, navigation }) {
 		labels: ['week 2', 'week 1', 'current week'],
 		datasets: [
 			{
-				data: candle.c,
+				data: candle.c === undefined ? [0] : candle.c,
 				strokeWidth: 4 // optional
 			}
 		],
