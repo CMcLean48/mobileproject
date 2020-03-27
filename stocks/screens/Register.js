@@ -35,6 +35,7 @@ export default function Register({ navigation }) {
       console.error(error);
     }
   }
+
   async function handleSubmit(values) {
     return new Promise(async (resolve, reject) => {
       if (values.email.length > 0 && values.password.length > 0) {
@@ -55,6 +56,7 @@ export default function Register({ navigation }) {
                     }
                   }).then(response => {
                     if (response.status == 201) {
+                      //Only Store Token if Everything Is Successful
                       _storeData(tokenResponse.token);
                       resolve(response.status);
                     } else {
@@ -79,10 +81,13 @@ export default function Register({ navigation }) {
           confirmPassword: ""
         }}
         onSubmit={async (values, { resetForm, setSubmitting }) => {
+          //Lock Register Button
           setSubmitting(true);
 
           try {
             let registerSuccess = await handleSubmit(values);
+
+            //Success
             if (registerSuccess == 201) {
               alert("YAY! - It's Portfolio Time!");
               navigation.navigate("Portfolio");
@@ -90,9 +95,11 @@ export default function Register({ navigation }) {
               alert("Hmmm Something Went Wrong");
             }
           } catch (error) {
+            //Fail
             alert(error);
             resetForm();
           } finally {
+            //Unlock Register Button
             setSubmitting(false);
           }
         }}
