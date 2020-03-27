@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
+import { useFocusEffect } from '@react-navigation/native';
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
 import Logout from "../components/Logout";
 
 export default function Home({ navigation }) {
-  useEffect(() => {
+  useFocusEffect(React.useCallback(() => {
     // the list of exchanges
     getDataFromAPI(["US", "TO", "CN", "V", "NE"]);
-  }, []);
+  }, []));
 
-  useEffect(() => {
+  useFocusEffect(    React.useCallback(() => {
     retrieveData();
-  }, [navigation]);
+  }, [navigation]));
 
   const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
   const [stocks, setStocks] = useState([]);
