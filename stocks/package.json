@@ -37,6 +37,7 @@
     "react-native-screens": "2.0.0-alpha.12",
     "react-native-svg": "9.13.3",
     "react-native-web": "~0.11.7",
+    "react-number-format": "^4.4.1",
     "tcomb-form-native": "^0.6.20",
     "yup": "^0.28.3"
   },
