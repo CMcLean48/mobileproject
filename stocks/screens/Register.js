@@ -30,7 +30,7 @@ const validationSchema = Yup.object().shape({
 export default function Register({ navigation }) {
 	const goToLogin = () => navigation.navigate('Login');
 	const API_CREATE_URL =  "https://ssdstockappapi.azurewebsites.net/api/User/create";
-	
+
 	async function _storeData(token) {
 		try {
 			await AsyncStorage.setItem('JWT_TOKEN', token);
@@ -38,7 +38,8 @@ export default function Register({ navigation }) {
 			console.error(error);
 		}
 	}
-	async function handleSubmit(values) {
+	const handleSubmit = (values) => {
+    return new Promise(async (res, rej) => {
 		if (values.email.length > 0 && values.password.length > 0) {
 			await setTimeout(() => {
 				firebase
@@ -74,8 +75,10 @@ export default function Register({ navigation }) {
 					})
 
 					.catch(error => alert('Firebase Register Error: ' + error));
-			}, 6000);
-		}
+      }, 6000);
+      res()
+    }
+  })
 	}
 
 	return (
@@ -87,8 +90,14 @@ export default function Register({ navigation }) {
 					password: '',
 					confirmPassword: ''
 				}}
-				onSubmit={values => {
-					handleSubmit(values);
+				onSubmit={async (values, {resetForm})  => {
+          try{
+            handleSubmit(values).then(
+            resetForm()
+            )
+          }catch (e){
+            console.error(e)
+          }
 				}}
 				validationSchema={validationSchema}
 			>
