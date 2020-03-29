@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
@@ -14,34 +14,34 @@ export default function Home({ navigation }) {
     getDataFromAPI(["US", "TO", "CN", "V", "NE"]);
   }, []);
 
-  useFocusEffect(    React.useCallback(() => {
-    let isActive = true
+  useFocusEffect(
+    React.useCallback(() => {
+      let isActive = true;
 
-    const getJWT = async () => {
-
-    try {
-      if(isActive){
-        // console.log("inside retrive data");
-        const value = await AsyncStorage.getItem("JWT_TOKEN");
-        if (value !== null) {
-          // We have data!!
-          console.log('Token Saved as', value);
-          setJWT(value);
-          setLoggedIn(true);
+      const getJWT = async () => {
+        try {
+          if (isActive) {
+            // console.log("inside retrive data");
+            const value = await AsyncStorage.getItem("JWT_TOKEN");
+            if (value !== null) {
+              // We have data!!
+              console.log("Token Saved as", value);
+              setJWT(value);
+              setLoggedIn(true);
+            }
+          }
+        } catch (error) {
+          // Error retrieving data
         }
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
+      };
 
-  getJWT()
+      getJWT();
 
-    return () =>{
-      isActive = false;
-    };
-
-  }, [navigation]));
+      return () => {
+        isActive = false;
+      };
+    }, [navigation])
+  );
 
   const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
   const [stocks, setStocks] = useState([]);
@@ -115,7 +115,12 @@ export default function Home({ navigation }) {
       )}
       {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
       {loggedIn && <Logout getLoggedIn={getLoggedIn} />}
-      {loggedIn && <Button title="Portfolio" onPress={() => goToPortfolio()} />}
+      {loggedIn && (
+        <Button
+          title="Portfolio"
+          onPress={() => navigation.navigate("Portfolio")}
+        />
+      )}
     </SafeAreaView>
   );
 }

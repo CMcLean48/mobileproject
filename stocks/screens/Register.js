@@ -80,17 +80,13 @@ export default function Register({ navigation }) {
           password: "",
           confirmPassword: ""
         }}
-        onSubmit={async (values, { resetForm, setSubmitting }) => {
-          //Lock Register Button
-          setSubmitting(true);
-
+        onSubmit={async (values, { resetForm }) => {
           try {
             let registerSuccess = await handleSubmit(values);
 
             //Success
             if (registerSuccess == 201) {
-              alert("YAY! - It's Portfolio Time!");
-              navigation.navigate("Portfolio");
+              navigation.navigate("Stocks");
             } else {
               alert("Hmmm Something Went Wrong");
             }
@@ -98,9 +94,6 @@ export default function Register({ navigation }) {
             //Fail
             alert(error);
             resetForm();
-          } finally {
-            //Unlock Register Button
-            setSubmitting(false);
           }
         }}
         validationSchema={validationSchema}
