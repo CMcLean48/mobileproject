@@ -24,7 +24,7 @@ export default function Home({ navigation }) {
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
-  retrieveData = async () => {
+  const retrieveData = async () => {
     try {
       // console.log("inside retrive data");
       const value = await AsyncStorage.getItem("JWT_TOKEN");
@@ -38,6 +38,10 @@ export default function Home({ navigation }) {
       // Error retrieving data
     }
   };
+
+  function goToPortfolio () {
+    navigation.navigate("Portfolio")
+  }
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];

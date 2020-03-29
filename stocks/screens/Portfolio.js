@@ -26,6 +26,7 @@ export default function Portfolio({ navigation }) {
 			  console.error(error);
 			}
 		  }
+
 		  async function getData(isActive) {
 			if (isActive) {
 			  fetch("https://ssdstockappapi.azurewebsites.net/api/Portfolio", {
@@ -44,8 +45,6 @@ export default function Portfolio({ navigation }) {
 			}
 		  }
 
-
-
 		  getData(isActive).catch(e => {console.error(error)})
 
 		  return () => {
@@ -60,11 +59,13 @@ export default function Portfolio({ navigation }) {
 
 	return(
 		<SafeAreaView style={styles.container}>
-			<Text>{json.userEmail}</Text>
-			{!!json.cashBalance && <Text>Cash Balance: $ {json.cashBalance} USD</Text>}
-			{!!json.currentPortfolioValue && <Text>Portfolio Value: $ {json.currentPortfolioValue} CAD</Text>}
-			{!!json.stockHoldings && json.stockHoldings.map((stock) => {
-				return ( <SafeAreaView key={stock.stockSymbol} style={styles.stocks}>
+		<SafeAreaView style={styles.textContainer}>
+			<Text style={styles.textBold}>{json.userEmail}</Text>
+			{!!json.cashBalance && <Text style={styles.text}>Cash Balance: $ {json.cashBalance} USD</Text>}
+			{!!json.currentPortfolioValue && <Text style={styles.text}>Portfolio Value: $ {json.currentPortfolioValue} CAD</Text>}
+			</SafeAreaView>
+			{!!json.stockHoldings && json.stockHoldings.map((stock, index) => {
+				return ( <SafeAreaView key={stock.stockSymbol} style={{backgroundColor: (checkIndexIsEven(index) ? "#ff8a3c" : "#33A5FF"), 		borderRadius: 10, width: "80%", alignItems: "center"	}}>
 				<Text style={styles.bold}>{stock.companyName} | {stock.stockSymbol}</Text>
 						<Text>Total Value: {stock.currentValue}</Text>
 						<Text>Stock Price: {stock.currentPrice}</Text>
@@ -76,15 +77,28 @@ export default function Portfolio({ navigation }) {
 		</SafeAreaView>);
 }
 
+function checkIndexIsEven (n) {
+    return n % 2 == 0;
+}
+
 const styles = StyleSheet.create({
 	container: {
 	  flex: 1,
-	  backgroundColor: "#fff",
 	  alignItems: "center",
-	  justifyContent: "center"
+	  backgroundColor: "#fff",
+	  justifyContent: "center",
 	},
-	stocks: {
+	textContainer: {
+		alignItems: "center",
+	},
+	text: {
+		width: "80%",
 		alignItems: "center"
+	},
+	textBold: {
+		width: "80%",
+		alignItems: "center",
+		fontWeight: "bold"
 	},
 	bold: {
 		paddingTop: 10,
