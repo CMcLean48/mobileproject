@@ -74,7 +74,7 @@ Unrealized Gain/Loss: ${stock.unrealizedGainLoss.toFixed(2)}
 		labels: ['Week 1 (latest)', 'Week 2', 'Week 3', 'Week 4'],
 		datasets: [
 			{
-				data: json.portfolio30DayHistory ? json.portfolio30DayHistory.map((history) => {return (history.snapshotPortfolioValue - history.basePortfolioValue)/history.basePortfolioValue*100}) : [0],
+				data: json.portfolio30DayHistory ? json.portfolio30DayHistory.map((history) => {if(history.basePortfolioValue) {return (history.snapshotPortfolioValue - history.basePortfolioValue)/history.basePortfolioValue*100}else{return 0}}) : [0],
 				strokeWidth: 4 // optional
 			}
 		],
