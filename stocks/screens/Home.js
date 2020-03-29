@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
@@ -9,13 +9,38 @@ import ShowList from "../components/ShowList";
 import Logout from "../components/Logout";
 
 export default function Home({ navigation }) {
-  useFocusEffect(React.useCallback(() => {
+  useEffect(() => {
     // the list of exchanges
     getDataFromAPI(["US", "TO", "CN", "V", "NE"]);
-  }, []));
+  }, []);
 
   useFocusEffect(    React.useCallback(() => {
-    retrieveData();
+    let isActive = true
+
+    const getJWT = async () => {
+
+    try {
+      if(isActive){
+        // console.log("inside retrive data");
+        const value = await AsyncStorage.getItem("JWT_TOKEN");
+        if (value !== null) {
+          // We have data!!
+          console.log('Token Saved as', value);
+          setJWT(value);
+          setLoggedIn(true);
+        }
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  };
+
+  getJWT()
+
+    return () =>{
+      isActive = false;
+    };
+
   }, [navigation]));
 
   const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
@@ -23,21 +48,6 @@ export default function Home({ navigation }) {
   const [query, setQuery] = useState("");
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-
-  retrieveData = async () => {
-    try {
-      // console.log("inside retrive data");
-      const value = await AsyncStorage.getItem("JWT_TOKEN");
-      if (value !== null) {
-        // We have data!!
-        console.log(value);
-        setJWT(value);
-        setLoggedIn(true);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];
