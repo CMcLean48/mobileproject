@@ -99,12 +99,16 @@ export default function Detail({ route, navigation }) {
       })
         .then(res => res.json())
         .then(data => {
-          console.log(data);
+          if (data.stockSymbol == stockSymbol) {
+            alert(data.stockSymbol + "was placed in your watch list");
+          } else {
+            alert("Something went wrong: " + data.message);
+          }
+          //console.log(data);
         })
         .catch(err => {
           console.log(err);
         });
-      //console.log(response);
     }
   }
 
