@@ -5,7 +5,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import { AsyncStorage } from "react-native";
 
 
-
 export default function Portfolio({ navigation }) {
 
 	useFocusEffect(
