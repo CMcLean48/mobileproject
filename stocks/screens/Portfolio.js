@@ -62,9 +62,9 @@ export default function Portfolio({ navigation }) {
 		Alert.alert(
 `${stock.companyName}`,
 `Avg Cost: ${stock.averageCost.toFixed(2)}
+Total Cost: ${stock.totalCost.toFixed(2)}
 Current Price: ${stock.currentPrice.toFixed(2)}
 Current Value: ${stock.currentValue.toFixed(2)}
-Total Cost: ${stock.totalCost.toFixed(2)}
 Unrealized Gain/Loss: ${stock.unrealizedGainLoss.toFixed(2)}
 `)
 	}
