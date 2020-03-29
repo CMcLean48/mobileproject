@@ -62,6 +62,8 @@ export default function WatchList({ navigation }) {
         if (res.status == 200) {
           alert(stockSymbol + " was deleted from your watch list");
           setRefreshScreen(true);
+        } else if (res.status == 401) {
+          alert("Session time expired. Please log in");
         } else {
           var data = res.json();
           if (data.message) {
@@ -75,8 +77,19 @@ export default function WatchList({ navigation }) {
       });
   }
 
+  function getGrowthPercentage(currentPrice, openPrice) {
+    var percent = (((currentPrice - openPrice) / currentPrice) * 100).toFixed(
+      2
+    );
+    if (percent >= 0) {
+      return <Text style={styles.green}>+{percent}%</Text>;
+    }
+    return <Text style={styles.red}>{percent}%</Text>;
+  }
+
   return (
     <SafeAreaView>
+      <Text>Open price-(O) Current price-(C) Low-(L) High-(H)</Text>
       <VirtualizedList
         windowSize={10}
         data={watchList}
@@ -98,7 +111,14 @@ export default function WatchList({ navigation }) {
               }
             >
               <Text style={styles.cell}>
-                [{item.stockSymbol}] {item.companyName}
+                [{item.stockSymbol}] {item.companyName} {}(
+                {getGrowthPercentage(item.currentPrice, item.openPrice)})
+              </Text>
+              <Text>
+                O:{item.openPrice.toFixed(2)} {"  "}
+                C:{item.currentPrice.toFixed(2)} {"  "}
+                L:{item.lowPrice.toFixed(2)} {"  "}
+                H:{item.highPrice.toFixed(2)} {"  "}
               </Text>
             </TouchableOpacity>
           </View>
@@ -126,6 +146,7 @@ export default function WatchList({ navigation }) {
 
 const styles = StyleSheet.create({
   row: {
+    margin: 7,
     flex: 1,
     flexDirection: "row",
     alignItems: "center"
@@ -136,8 +157,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   deleteButton: {
+    marginRight: 5,
     color: "red",
     fontWeight: "bold",
     fontSize: 23
+  },
+  red: {
+    color: "red"
+  },
+  green: {
+    color: "green"
   }
 });
