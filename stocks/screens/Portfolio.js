@@ -62,10 +62,10 @@ export default function Portfolio({ navigation }) {
 		<SafeAreaView style={styles.textContainer}>
 			<Text style={styles.textBold}>{json.userEmail}</Text>
 			{!!json.cashBalance && <Text style={styles.text}>Cash Balance: $ {json.cashBalance} USD</Text>}
-			{!!json.currentPortfolioValue && <Text style={styles.text}>Portfolio Value: $ {json.currentPortfolioValue} CAD</Text>}
+			{!!json.currentPortfolioValue && <Text style={styles.text}>Portfolio Value: $ {json.currentPortfolioValue} USD</Text>}
 			</SafeAreaView>
 			{!!json.stockHoldings && json.stockHoldings.map((stock, index) => {
-				return ( <SafeAreaView key={stock.stockSymbol} style={{backgroundColor: (checkIndexIsEven(index) ? "#ff8a3c" : "#33A5FF"), 		borderRadius: 10, width: "80%", alignItems: "center"	}}>
+				return ( <SafeAreaView key={stock.stockSymbol} style={{backgroundColor: (checkIndexIsEven(index) ? "#ff8a3c" : "#33A5FF"), 		borderRadius: 10, width: "80%", alignItems: "center", marginTop: 10	}}>
 				<Text style={styles.bold}>{stock.companyName} | {stock.stockSymbol}</Text>
 						<Text>Total Value: {stock.currentValue}</Text>
 						<Text>Stock Price: {stock.currentPrice}</Text>
