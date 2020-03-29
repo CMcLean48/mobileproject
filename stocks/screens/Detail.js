@@ -4,37 +4,39 @@ import {
 	SafeAreaView,
 	Text,
 	View,
-	Button,
-	Dimensions
+	Dimensions,
+	Button
 } from 'react-native';
 import { AsyncStorage } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import finnhub from '../api/finnhub';
 import { LineChart } from 'react-native-chart-kit';
-//import { FINNHUB_API_KEY } from 'react-native-dotenv';
+import { ScrollView } from 'react-native-gesture-handler';
 
+//import { FINNHUB_API_KEY } from 'react-native-dotenv';
 
 const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
 
 export default function Detail({ route, navigation }) {
+	useFocusEffect(
+		React.useCallback(() => {
+			retrieveData();
+		}, [navigation])
+	);
 
-
-	useFocusEffect(    React.useCallback(() => {
-		retrieveData();
-	  }, [navigation]));
-
-	  useFocusEffect(React.useCallback(() => {
-		searchAPI();
-		searchAPICandle();
-		//Get Params from Route
-		//console.log(route.params.stock);
-	}, [navigation]));
+	useFocusEffect(
+		React.useCallback(() => {
+			searchAPI();
+			searchAPICandle();
+			//Get Params from Route
+			//console.log(route.params.stock);
+		}, [navigation])
+	);
 
 	const [quote, setQuote] = useState(null);
 	const [candle, setCandle] = useState(null);
-	const [JWT, setJWT] = useState("");
+	const [JWT, setJWT] = useState('');
 	const [loggedIn, setLoggedIn] = useState(false);
-
 
 	const searchAPI = async () => {
 		const response = await finnhub.get(
@@ -47,18 +49,18 @@ export default function Detail({ route, navigation }) {
 
 	retrieveData = async () => {
 		try {
-		  // console.log("inside retrive data");
-		  const value = await AsyncStorage.getItem("JWT_TOKEN");
-		  if (value !== null) {
-			// We have data!!
-			console.log(value);
-			setJWT(value);
-			setLoggedIn(true);
-		  }
+			// console.log("inside retrive data");
+			const value = await AsyncStorage.getItem('JWT_TOKEN');
+			if (value !== null) {
+				// We have data!!
+				console.log(value);
+				setJWT(value);
+				setLoggedIn(true);
+			}
 		} catch (error) {
-		  // Error retrieving data
+			// Error retrieving data
 		}
-	  };
+	};
 
 	var currentDate = Math.round(new Date().getTime() / 1000);
 	let fromDate = currentDate - 2592000;
@@ -72,7 +74,6 @@ export default function Detail({ route, navigation }) {
 		setCandle(candleResponse.data);
 	};
 
-
 	if (!quote) {
 		return null;
 	}
@@ -81,6 +82,9 @@ export default function Detail({ route, navigation }) {
 	} else {
 		console.log('candle ' + candle.c);
 	}
+
+
+	const watchStock = () => {};
 	const lineData = {
 		labels: ['week 2', 'week 1', 'current week'],
 		datasets: [
@@ -105,58 +109,82 @@ export default function Detail({ route, navigation }) {
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
-				<View>
-					<LineChart
-						data={lineData}
-						width={Dimensions.get('window').width} // from react-native
-						height={240}
-						yAxisLabel={'$'}
-						chartConfig={chartConfig}
-						bezier
-						style={{
-
-							marginVertical: 8,
-							borderRadius: 16
-						}}
-					/>
-				</View>
+				<LineChart
+					data={lineData}
+					width={Dimensions.get('window').width} // from react-native
+					height={240}
+					yAxisLabel={'$'}
+					chartConfig={chartConfig}
+					bezier
+					style={{
+						marginVertical: 8,
+						borderRadius: 16
+					}}
+				/>
 
 				<Text style={styles.symbol}>Stock: {route.params.stock}</Text>
+				<ScrollView>
+					<View style={styles.quote}>
+						{!!quote.o &&
+						<Text style={styles.qt}>open:${quote.o.toFixed(2)}</Text>}
+						{!!quote.c && <Text style={styles.qt}>close:${quote.c.toFixed(2)}</Text>}
+						{!!quote.h && <Text style={styles.qt}>high:${quote.h.toFixed(2)}</Text>}
+						{!!quote.qt && <Text style={styles.qt}>low:${quote.l.toFixed(2)}</Text>}
+						{!!quote.pc && <Text style={styles.qt}>
+							previous close:${quote.pc.toFixed(2)}
+						</Text>}
+					</View>
+					<View style={styles.btnGroup}>
+						{!loggedIn && (
+							<Button
+								color="#33A5FF"
+								style={styles.btn}
+								title="Register"
+								onPress={() => navigation.navigate('Register')}
+							/>
+						)}
 
-				<View style={styles.quote}>
-					<Text style={styles.qt}>open:${quote.o}</Text>
-					<Text style={styles.qt}>close:${quote.c}</Text>
-					<Text style={styles.qt}>high:${quote.h}</Text>
-					<Text style={styles.qt}>low:${quote.l}</Text>
-					<Text style={styles.qt}>previous close:${quote.pc}</Text>
-				</View>
-				<View style={styles.btns}>
-					{!loggedIn && <Button
-						title="Register"
-						onPress={() => navigation.navigate('Register')}
-					/>}
+						{!loggedIn && (
+							<Button
+								color="#33A5FF"
+								title="Login"
+								onPress={() => navigation.navigate('Login')}
+							/>
+						)}
 
-					{!loggedIn && <Button
-						title="Login"
-						onPress={() => navigation.navigate('Login')}
-					/>}
+						{loggedIn && (
+							<Button
+								color="#33A5FF"
+								title="Portfolio"
+								onPress={() => navigation.navigate('Portfolio')}
+							/>
+						)}
 
-					{loggedIn && <Button
-						title="Portfolio"
-						onPress={() => navigation.navigate('Portfolio')}
-					/>}
+						{loggedIn && (
+							<Button
+								color="#33A5FF"
+								title="Watch This Stock"
+								onPress={() => watchStock()}
+							/>
+						)}
 
-					{loggedIn && <Button title="Watch Stock" onPress={() => watchStock()} />}
+						{loggedIn && (
+							<Button
+								color="#33A5FF"
+								title="Watched Stocks"
+								onPress={() => navigation.navigate('Stocks')}
+							/>
+						)}
 
-					{loggedIn && <Button
-						title="Watched Stocks"
-						onPress={() => navigation.navigate('WatchList')}
-					/>}
+						{/* {loggedIn && (
+							<Button title="Buy" onPress={() => buyStock()} />
+						)} */}
 
-					{loggedIn && <Button title="Buy" onPress={() => buyStock()} />}
-
-					{loggedIn && <Button title="Sell" onPress={() => sellStock()} />}
-				</View>
+						{/* {loggedIn && (
+							<Button title="Sell" onPress={() => sellStock()} />
+						)} */}
+					</View>
+				</ScrollView>
 			</SafeAreaView>
 		</>
 	);
@@ -188,10 +216,14 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		justifyContent: 'space-between',
 		paddingRight: 20,
-		paddingTop: 10
+		paddingTop: 10,
+		paddingBottom: 15
+	},
+	btnGroup: {
+		paddingTop: 10,
+		color: '#33A5FF'
 	},
 	btns: {
-		flexDirection: 'row',
-		flexWrap: 'wrap'
+
 	}
 });
