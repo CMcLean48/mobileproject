@@ -82,7 +82,6 @@ export default function Detail({ route, navigation }) {
 	} else {
 		console.log('candle ' + candle.c);
 	}
-	
 
 	const watchStock = () => {};
 	const lineData = {
@@ -125,13 +124,31 @@ export default function Detail({ route, navigation }) {
 				<Text style={styles.symbol}>Stock: {route.params.stock}</Text>
 				<ScrollView>
 					<View style={styles.quote}>
-						<Text style={styles.qt}>open:${quote.o.toFixed(2)}</Text>
-						<Text style={styles.qt}>close:${quote.c.toFixed(2)}</Text>
-						<Text style={styles.qt}>high:${quote.h.toFixed(2)}</Text>
-						<Text style={styles.qt}>low:${quote.l.toFixed(2)}</Text>
-						<Text style={styles.qt}>
-							previous close:${quote.pc.toFixed(2)}
-						</Text>
+						{!!quote.o && (
+							<Text style={styles.qt}>
+								open:${quote.o.toFixed(2)}
+							</Text>
+						)}
+						{!!quote.c && (
+							<Text style={styles.qt}>
+								close:${quote.c.toFixed(2)}
+							</Text>
+						)}
+						{!!quote.h && (
+							<Text style={styles.qt}>
+								high:${quote.h.toFixed(2)}
+							</Text>
+						)}
+						{!!quote.qt && (
+							<Text style={styles.qt}>
+								low:${quote.l.toFixed(2)}
+							</Text>
+						)}
+						{!!quote.pc && (
+							<Text style={styles.qt}>
+								previous close:${quote.pc.toFixed(2)}
+							</Text>
+						)}
 					</View>
 					<View style={styles.btnGroup}>
 						{!loggedIn && (
@@ -222,7 +239,5 @@ const styles = StyleSheet.create({
 		paddingTop: 10,
 		color: '#33A5FF'
 	},
-	btns: {
-
-	}
+	btns: {}
 });
