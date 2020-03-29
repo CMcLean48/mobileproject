@@ -18,7 +18,6 @@ export default function Home({ navigation }) {
     let isActive = true
 
     const getJWT = async () => {
-
     try {
       if(isActive){
         // console.log("inside retrive data");
@@ -48,6 +47,9 @@ export default function Home({ navigation }) {
   const [query, setQuery] = useState("");
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  function goToPortfolio () {
+    navigation.navigate("Portfolio")
+  }
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];
