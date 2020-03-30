@@ -238,6 +238,14 @@ export default function Detail({ route, navigation }) {
 								onPress={() => navigation.navigate('WatchList')}
 							/>
 						)}
+
+					{loggedIn && (
+							<Button
+								color="#33A5FF"
+								title="Buy or Sell"
+								onPress={() => navigation.navigate('Transaction', {stock: route.params.stock})}
+							/>
+						)}
 					</View>
 				</ScrollView>
 
@@ -248,14 +256,7 @@ export default function Detail({ route, navigation }) {
 				{/* {loggedIn && (
 							<Button title="Sell" onPress={() => sellStock()} />
 						)} */}
-				<Text>Buy Stock Qty</Text>
-				<TextInput
-					
-					keyboardType={'numeric'}
-					style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-					onChangeText={text => onChangeText(text)}
-					value={value}
-				/>
+
 			</SafeAreaView>
 		</>
 	);
