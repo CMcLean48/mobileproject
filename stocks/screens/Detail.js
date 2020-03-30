@@ -22,11 +22,37 @@ import * as Yup from 'yup';
 const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
 
 export default function Detail({ route, navigation }) {
+
 	useFocusEffect(
 		React.useCallback(() => {
-			retrieveData();
+		  let isActive = true;
+
+		  const getJWT = async () => {
+			try {
+			  if (isActive) {
+				// console.log("inside retrive data");
+				const value = await AsyncStorage.getItem("JWT_TOKEN");
+				if (value !== null) {
+				  // We have data!!
+				  console.log("Token Saved as", value);
+				  setJWT(value);
+				  setLoggedIn(true);
+				}
+			  }
+			} catch (error) {
+			  // Error retrieving data
+			}
+		  };
+
+
+		  getJWT();
+
+
+		  return () => {
+			isActive = false;
+		  };
 		}, [navigation])
-	);
+	  );
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -52,20 +78,7 @@ export default function Detail({ route, navigation }) {
 		console.log(response.data);
 	};
 
-	retrieveData = async () => {
-		try {
-			// console.log("inside retrive data");
-			const value = await AsyncStorage.getItem('JWT_TOKEN');
-			if (value !== null) {
-				// We have data!!
-				console.log(value);
-				setJWT(value);
-				setLoggedIn(true);
-			}
-		} catch (error) {
-			// Error retrieving data
-		}
-	};
+
 
 	var currentDate = Math.round(new Date().getTime() / 1000);
 	let fromDate = currentDate - 2592000;
