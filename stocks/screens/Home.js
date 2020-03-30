@@ -18,20 +18,18 @@ export default function Home({ navigation }) {
     React.useCallback(() => {
       let isActive = true;
 
-      const getJWT = async () => {
-        try {
-          if (isActive) {
-            // console.log("inside retrive data");
-            const value = await AsyncStorage.getItem("JWT_TOKEN");
-            if (value !== null) {
-              // We have data!!
-              console.log("Token Saved as", value);
-              setJWT(value);
-              setLoggedIn(true);
-            }
-          }
-        } catch (error) {
-          // Error retrieving data
+
+    const getJWT = async () => {
+    try {
+      if(isActive){
+        // console.log("inside retrive data");
+        const value = await AsyncStorage.getItem("JWT_TOKEN");
+        if (value !== null) {
+          // We have data!!
+          console.log('Token Saved as', value);
+          setJWT(value);
+          setLoggedIn(true);
+
         }
       };
 
@@ -48,6 +46,9 @@ export default function Home({ navigation }) {
   const [query, setQuery] = useState("");
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  function goToPortfolio () {
+    navigation.navigate("Portfolio")
+  }
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];
