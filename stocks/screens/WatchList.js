@@ -41,10 +41,8 @@ export default function WatchList({ navigation }) {
       .then(res => res.json())
       .then(data => {
         setWatchList(data.stocks);
-        //console.log(data.stocks);
       })
       .catch(err => {
-        //alert(err.message);
         console.log(err);
       });
   }
@@ -80,9 +78,13 @@ export default function WatchList({ navigation }) {
   }
 
   function getGrowthPercentage(currentPrice, openPrice) {
-    var percent = (((currentPrice - openPrice) / currentPrice) * 100).toFixed(
-      2
-    );
+    if (currentPrice !== 0) {
+      var percent = (((currentPrice - openPrice) / currentPrice) * 100).toFixed(
+        2
+      );
+    } else {
+      var percent = 0;
+    }
     if (percent >= 0) {
       return <Text style={styles.green}>+{percent}%</Text>;
     }
