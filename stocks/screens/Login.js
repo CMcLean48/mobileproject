@@ -44,12 +44,14 @@ export default function Login({ navigation }) {
         .auth()
         .currentUser.getIdTokenResult()
         .then(tokenResponse => {_storeData(tokenResponse.token)
-          console.log(tokenResponse.token)
         })
         .catch(error => alert("Firebase Token Retrival Error: " + error))
-        .then(
+        .then(() => {
+
+        }
+        ).then(
           navigation.navigate("Stocks")
-        );
+        )
         });
       }, 3000);
     }

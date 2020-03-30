@@ -9,28 +9,33 @@ import {
   ScrollView
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import { AsyncStorage } from "react-native";
-import { LineChart } from "react-native-chart-kit";
+import { LineChart } from 'react-native-chart-kit';
+import firebase from "../firebase";
 
 export default function Portfolio({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       let isActive = true;
 
-      async function getJWT() {
-        try {
-          console.log("inside retrive data");
-          let value = await AsyncStorage.getItem("JWT_TOKEN");
-          if (value !== null) {
-            // We have data!!
-            console.log(value);
-            return value;
-          }
-        } catch (error) {
-          // Error retrieving data
-          console.error(error);
-        }
-      }
+	useFocusEffect(
+		React.useCallback(() => {
+		  let isActive = true;
+
+		  async function getJWT() {
+			try {
+			  console.log("inside retrive data");
+			  let value = await firebase.auth().currentUser.getIdTokenResult()
+			  if (value.token !== null) {
+				// We have data!!
+				console.log(value);
+				return value.token;
+			  }
+			} catch (error) {
+			  // Error retrieving data
+			  console.error(error);
+			}
+		  }
+
 
       async function getData(isActive) {
         if (isActive) {
@@ -65,17 +70,16 @@ export default function Portfolio({ navigation }) {
     userEmail: "Loading"
   });
 
-  function displayMore(stock) {
-    Alert.alert(
-      `${stock.companyName}`,
-      `Avg Cost: ${stock.averageCost.toFixed(2)}
-Total Cost: ${stock.totalCost.toFixed(2)}
-Current Price: ${stock.currentPrice.toFixed(2)}
-Current Value: ${stock.currentValue.toFixed(2)}
-Unrealized Gain/Loss: ${stock.unrealizedGainLoss.toFixed(2)}
-`
-    );
-  }
+	function displayMore(stock) {
+		Alert.alert(
+`${stock.companyName}`,
+`Avg Cost: $ ${stock.averageCost.toFixed(2)}
+Total Cost: $ ${stock.totalCost.toFixed(2)}
+Current Price: $ ${stock.currentPrice.toFixed(2)}
+Current Value: $ ${stock.currentValue.toFixed(2)}
+Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
+`)
+	}
 
   const lineData = {
     labels: ["Week 1 (latest)", "Week 2", "Week 3", "Week 4"],
@@ -112,65 +116,37 @@ Unrealized Gain/Loss: ${stock.unrealizedGainLoss.toFixed(2)}
     }
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <LineChart
-        data={lineData}
-        width={Dimensions.get("window").width} // from react-native
-        height={240}
-        yAxisLabel={"% "}
-        chartConfig={chartConfig}
-        bezier
-        style={{
-          marginVertical: 8,
-          borderRadius: 16
-        }}
-      />
-      <ScrollView contentContainerStyle={styles.scroll}>
-        <SafeAreaView style={styles.textContainer}>
-          <Text style={styles.textBold}>{json.userEmail}</Text>
-          {!!json.cashBalance && (
-            <Text style={styles.text}>
-              Cash Balance: $ {json.cashBalance} USD
-            </Text>
-          )}
-          {!!json.currentPortfolioValue && (
-            <Text style={styles.text}>
-              Portfolio Value: $ {json.currentPortfolioValue} USD
-            </Text>
-          )}
-        </SafeAreaView>
-        {!!json.stockHoldings &&
-          json.stockHoldings.map((stock, index) => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  displayMore(stock);
-                }}
-                key={stock.stockSymbol}
-                style={{
-                  backgroundColor: checkIndexIsEven(index)
-                    ? "#ff8a3c"
-                    : "#33A5FF",
-                  paddingBottom: 10,
-                  borderRadius: 10,
-                  width: 250,
-                  alignItems: "center",
-                  marginTop: 10
-                }}
-              >
-                <Text style={styles.bold}>
-                  {stock.companyName} | {stock.stockSymbol}
-                </Text>
-                <Text>Stock Price: {stock.currentPrice.toFixed(2)}</Text>
-                <Text>Quantity: {stock.quantity}</Text>
-                <Text>Click for more info</Text>
-              </TouchableOpacity>
-            );
-          })}
-      </ScrollView>
-    </SafeAreaView>
-  );
+	return(
+		<SafeAreaView style={styles.container}>
+			<LineChart
+					data={lineData}
+					width={Dimensions.get('window').width} // from react-native
+					height={240}
+					yAxisLabel={'% '}
+					chartConfig={chartConfig}
+					bezier
+					style={{
+						marginVertical: 8,
+						borderRadius: 16
+					}}
+				/>
+			<ScrollView contentContainerStyle={styles.scroll}>
+			<SafeAreaView style={styles.textContainer}>
+			<Text style={styles.textBold}>{json.userEmail}</Text>
+			{!!json.cashBalance && <Text style={styles.text}>Cash Balance: $ {json.cashBalance} USD</Text>}
+			{!!json.currentPortfolioValue && <Text style={styles.text}>Portfolio Value: $ {json.currentPortfolioValue} USD</Text>}
+			</SafeAreaView>
+			{!!json.stockHoldings && json.stockHoldings.map((stock, index) => {
+				return ( <TouchableOpacity onPress={() => {displayMore(stock)}} key={stock.stockSymbol} style={{backgroundColor: (checkIndexIsEven(index) ? "#ff8a3c" : "#33A5FF"), 	paddingBottom: 10,	borderRadius: 10, width: 250, alignItems: "center", marginTop: 10	}}>
+							<Text style={styles.bold}>{stock.companyName} | {stock.stockSymbol}</Text>
+							<Text>Stock Price: $ {stock.currentPrice.toFixed(2)}</Text>
+							<Text>Quantity: {stock.quantity}</Text>
+							<Text>Click for more info</Text>
+						</TouchableOpacity>
+					)
+			})}
+			</ScrollView>
+		</SafeAreaView>);
 }
 
 function checkIndexIsEven(n) {

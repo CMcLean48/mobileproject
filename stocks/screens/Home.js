@@ -35,7 +35,9 @@ export default function Home({ navigation }) {
         }
       };
 
+
       getJWT();
+
 
       return () => {
         isActive = false;
@@ -48,6 +50,7 @@ export default function Home({ navigation }) {
   const [query, setQuery] = useState("");
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+
   function goToPortfolio() {
     navigation.navigate("Portfolio");
   }
@@ -62,6 +65,10 @@ export default function Home({ navigation }) {
       //console.log(stocks.length);
     });
   };
+
+  function goToPortfolio () {
+    navigation.navigate("Portfolio")
+  }
 
   const searchAPI = async exchangeCode => {
     console.log("CALL");
@@ -117,7 +124,6 @@ export default function Home({ navigation }) {
       {!loggedIn && (
         <Button title="Login" onPress={() => navigation.navigate("Login")} />
       )}
-      {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
       {loggedIn && <Logout getLoggedIn={getLoggedIn} />}
       {loggedIn && <Button title="Portfolio" onPress={() => goToPortfolio()} />}
     </SafeAreaView>
