@@ -18,51 +18,54 @@ const validationSchema = Yup.object().shape({
   password: Yup.string()
     .label("Password")
     .required()
-    .min(4, "Password must have more than 4 characters ")
+    .min(6, "Password must have more than 6 characters ")
 });
 
 export default function Login({ navigation }) {
   const goToSignup = () => navigation.navigate("Register");
 
-  async function _storeData(token) {
-    try {
-      await AsyncStorage.setItem("JWT_TOKEN", token);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function _storeData(token) {
+  //   try {
+  //     await AsyncStorage.setItem("JWT_TOKEN", token);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   async function handleSubmit(values) {
-    if (values.email.length > 0 && values.password.length > 0) {
-      await setTimeout(() => {
+    return new Promise(async (resolve, reject) => {
+      if (values.email.length > 0 && values.password.length > 0) {
         firebase
           .auth()
           .signInWithEmailAndPassword(values.email, values.password)
-          .catch(error => alert("Firebase Login Error: " + error))
-          .then(() => {
-      firebase
-        .auth()
-        .currentUser.getIdTokenResult()
-        .then(tokenResponse => {_storeData(tokenResponse.token)
-        })
-        .catch(error => alert("Firebase Token Retrival Error: " + error))
-        .then(() => {
-
-        }
-        ).then(
-          navigation.navigate("Stocks")
-        )
-        });
-      }, 3000);
-    }
+          .then(reponse => {
+            firebase
+              .auth()
+              .currentUser.getIdTokenResult()
+              .then(tokenResponse => {
+                // _storeData(tokenResponse.token);
+                resolve();
+              })
+              .catch(error => reject("Firebase " + error));
+          })
+          .catch(error => reject("Firebase " + error));
+      }
+    });
   }
 
   return (
     <SafeAreaView style={styles.container}>
       <Formik
         initialValues={{ email: "", password: "" }}
-        onSubmit={values => {
-          handleSubmit(values);
+        onSubmit={async values => {
+          try {
+            await handleSubmit(values);
+            navigation.navigate("Stocks");
+          } catch (error) {
+            //Fail
+            alert(error);
+            values.password = "";
+          }
         }}
         validationSchema={validationSchema}
       >
