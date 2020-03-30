@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
   SafeAreaView,
-  Button,
   View,
   AsyncStorage,
   TouchableOpacity,
@@ -19,6 +18,7 @@ export default function WatchList({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getWatchList();
+      setRefreshScreen(false);
     }, [refreshScreen])
   );
 
