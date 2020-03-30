@@ -12,7 +12,7 @@ import firebase from "../firebase";
 export default function Home({ navigation }) {
   useEffect(() => {
     // the list of exchanges
-    getDataFromAPI(["US", "TO", "CN", "V", "NE"]);
+    getDataFromAPI(["US", "TO"]);
   }, []);
 
   useFocusEffect(
