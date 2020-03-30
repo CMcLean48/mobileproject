@@ -36,14 +36,14 @@ export default function Transaction({navigation, route}) {
             .then(res => res.json())
             .then(data => {
               console.log(data);
+              navigation.navigate("Confirm")
             })
             .catch(error => {
               console.log(error);
             });
       }
 
-      async function getSell(isActive) {
-        if (isActive) {
+      async function getSell() {
           fetch("https://ssdstockappapi.azurewebsites.net/api/StockTransaction/sell", {
             method: "GET",
             headers: {
@@ -53,11 +53,11 @@ export default function Transaction({navigation, route}) {
             .then(res => res.json())
             .then(data => {
               console.log(data);
+              navigation.navigate("Confirm")
             })
             .catch(error => {
               console.log(error);
             });
-        }
       }
 
   const [value, onChangeText] = useState("");
