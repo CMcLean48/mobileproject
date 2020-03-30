@@ -28,13 +28,13 @@ export default function Register({ navigation }) {
   const API_CREATE_URL =
     "https://ssdstockappapi.azurewebsites.net/api/User/create";
 
-  async function _storeData(token) {
-    try {
-      await AsyncStorage.setItem("JWT_TOKEN", token);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  // async function _storeData(token) {
+  //   try {
+  //     await AsyncStorage.setItem("JWT_TOKEN", token);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
 
   async function handleSubmit(values) {
     return new Promise(async (resolve, reject) => {
@@ -56,8 +56,6 @@ export default function Register({ navigation }) {
                     }
                   }).then(response => {
                     if (response.status == 201) {
-                      //Only Store Token if Everything Is Successful
-                      _storeData(tokenResponse.token);
                       resolve(response.status);
                     } else {
                       reject("API ERROR: " + JSON.stringify(response));
@@ -81,16 +79,12 @@ export default function Register({ navigation }) {
           confirmPassword: ""
         }}
         onSubmit={async (values, { resetForm, setSubmitting }) => {
-          //Lock Register Button
-          setSubmitting(true);
-
           try {
             let registerSuccess = await handleSubmit(values);
 
             //Success
             if (registerSuccess == 201) {
-              alert("YAY! - It's Portfolio Time!");
-              navigation.navigate("Portfolio");
+              navigation.navigate("Stocks");
             } else {
               alert("Hmmm Something Went Wrong");
             }
@@ -98,9 +92,6 @@ export default function Register({ navigation }) {
             //Fail
             alert(error);
             resetForm();
-          } finally {
-            //Unlock Register Button
-            setSubmitting(false);
           }
         }}
         validationSchema={validationSchema}

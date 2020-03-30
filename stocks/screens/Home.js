@@ -7,37 +7,52 @@ import { useFocusEffect } from "@react-navigation/native";
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
 import Logout from "../components/Logout";
+import firebase from "../firebase";
 
 export default function Home({ navigation }) {
   useEffect(() => {
     // the list of exchanges
-    getDataFromAPI(["US", "TO", "CN", "V", "NE"]);
+    getDataFromAPI(["US", "TO"]);
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
       let isActive = true;
 
-      const getJWT = async () => {
+      const getCurrentUser = async () => {
         try {
-          if (isActive) {
-            // console.log("inside retrive data");
-            const value = await AsyncStorage.getItem("JWT_TOKEN");
-            if (value !== null) {
-              // We have data!!
-              console.log("Token Saved as", value);
-              setJWT(value);
-              setLoggedIn(true);
-            }
+          let currentUser = await firebase.auth().currentUser;
+
+          if (currentUser != null) {
+            setLoggedIn(true);
+          } else {
+            setLoggedIn(false);
           }
         } catch (error) {
-          // Error retrieving data
+          console.log("Error Checking Logged In User" + error);
         }
       };
 
+      getCurrentUser();
 
-      getJWT();
+      // const getJWT = async () => {
+      //   try {
+      //     if (isActive) {
+      //       // console.log("inside retrive data");
+      //       const value = await AsyncStorage.getItem("JWT_TOKEN");
+      //       if (value !== null) {
+      //         // We have data!!
+      //         console.log("Token Saved as", value);
+      //         setJWT(value);
+      //         setLoggedIn(true);
+      //       }
+      //     }
+      //   } catch (error) {
+      //     // Error retrieving data
+      //   }
+      // };
 
+      // getJWT();
 
       return () => {
         isActive = false;
@@ -66,8 +81,8 @@ export default function Home({ navigation }) {
     });
   };
 
-  function goToPortfolio () {
-    navigation.navigate("Portfolio")
+  function goToPortfolio() {
+    navigation.navigate("Portfolio");
   }
 
   const searchAPI = async exchangeCode => {
