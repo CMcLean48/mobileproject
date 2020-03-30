@@ -54,6 +54,7 @@ export default function Transaction({navigation, route}) {
               StockSymbol: route.params.stock,
               quantity: parseInt(value)
             })
+          })
             .then(res => res.json())
             .then(data => {
               console.log(data);
