@@ -12,6 +12,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import finnhub from "../api/finnhub";
 import { LineChart } from "react-native-chart-kit";
 import { ScrollView } from "react-native-gesture-handler";
+import firebase from "../firebase";
 
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
 
@@ -50,11 +51,13 @@ export default function Detail({ route, navigation }) {
   retrieveData = async () => {
     try {
       // console.log("inside retrive data");
-      const value = await AsyncStorage.getItem("JWT_TOKEN");
-      if (value !== null) {
+      //const value = await AsyncStorage.getItem("JWT_TOKEN");
+      let value = await firebase.auth().currentUser.getIdTokenResult();
+      console.log(value.token);
+      if (value.token !== null) {
         // We have data!!
-        console.log(value);
-        setJWT(value);
+        console.log(value.token);
+        setJWT(value.token);
         setLoggedIn(true);
       }
     } catch (error) {
@@ -104,17 +107,19 @@ export default function Detail({ route, navigation }) {
     }
   };
 
-  async function getJWT() {
-    try {
-      let value = await AsyncStorage.getItem("JWT_TOKEN");
-      if (value !== null) return value;
-    } catch (error) {
-      //console.error(error);
-    }
-  }
+  // async function getJWT() {
+  //   try {
+  //     let value = await AsyncStorage.getItem("JWT_TOKEN");
+  //     if (value !== null) return value;
+  //   } catch (error) {
+  //     //console.error(error);
+  //   }
+  // }
 
   async function watchStock(stockSymbol) {
-    var JWTtoken = await getJWT();
+    let JWTtoken = await (await firebase.auth().currentUser.getIdTokenResult())
+      .token;
+    //var JWTtoken = await getJWT();
     //console.log(JWTtoken);
     //console.log(stockSymbol);
     if (JWTtoken !== null) {
