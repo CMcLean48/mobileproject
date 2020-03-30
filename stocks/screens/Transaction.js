@@ -35,8 +35,10 @@ export default function Transaction({navigation, route}) {
           })
             .then(res => res.json())
             .then(data => {
-              console.log(data);
-              navigation.navigate("Confirm")
+              console.log(data.stockSymbol);
+              if(!data.message){
+                navigation.navigate("Confirm")
+              }
             })
             .catch(error => {
               console.log(error);
@@ -44,6 +46,7 @@ export default function Transaction({navigation, route}) {
       }
 
       async function getSell() {
+        console.log(value)
           fetch("https://ssdstockappapi.azurewebsites.net/api/StockTransaction/sell", {
             method: "POST",
             headers: {
@@ -52,13 +55,15 @@ export default function Transaction({navigation, route}) {
             },
             body: JSON.stringify({
               StockSymbol: route.params.stock,
-              quantity: parseInt(value)
+              quantity: -parseInt(value)
             })
           })
             .then(res => res.json())
             .then(data => {
               console.log(data);
-              navigation.navigate("Confirm")
+              if(!data.message){
+                navigation.navigate("Confirm")
+              }
             })
             .catch(error => {
               console.log(error);
