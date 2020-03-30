@@ -19,6 +19,7 @@
     "expo": "~36.0.0",
     "expo-firebase-app": "^2.0.0",
     "firebase": "^7.10.0",
+    "firebase-admin": "^8.10.0",
     "formik": "^2.1.4",
     "native-base": "^2.13.8",
     "react": "~16.9.0",

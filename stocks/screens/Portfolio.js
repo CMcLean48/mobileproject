@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, SafeAreaView, TouchableOpacity, Alert, Dimensions, ScrollView } from 'react-native';
 import { useFocusEffect } from "@react-navigation/native";
-import { AsyncStorage } from "react-native";
 import { LineChart } from 'react-native-chart-kit';
-
-
+import firebase from "../firebase";
 
 export default function Portfolio({ navigation }) {
 
@@ -15,11 +13,11 @@ export default function Portfolio({ navigation }) {
 		  async function getJWT() {
 			try {
 			  console.log("inside retrive data");
-			  let value = await AsyncStorage.getItem("JWT_TOKEN");
-			  if (value !== null) {
+			  let value = await firebase.auth().currentUser.getIdTokenResult()
+			  if (value.token !== null) {
 				// We have data!!
 				console.log(value);
-				return value;
+				return value.token;
 			  }
 			} catch (error) {
 			  // Error retrieving data
@@ -61,11 +59,11 @@ export default function Portfolio({ navigation }) {
 	function displayMore(stock) {
 		Alert.alert(
 `${stock.companyName}`,
-`Avg Cost: ${stock.averageCost.toFixed(2)}
-Total Cost: ${stock.totalCost.toFixed(2)}
-Current Price: ${stock.currentPrice.toFixed(2)}
-Current Value: ${stock.currentValue.toFixed(2)}
-Unrealized Gain/Loss: ${stock.unrealizedGainLoss.toFixed(2)}
+`Avg Cost: $ ${stock.averageCost.toFixed(2)}
+Total Cost: $ ${stock.totalCost.toFixed(2)}
+Current Price: $ ${stock.currentPrice.toFixed(2)}
+Current Value: $ ${stock.currentValue.toFixed(2)}
+Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
 `)
 	}
 
@@ -114,7 +112,7 @@ Unrealized Gain/Loss: ${stock.unrealizedGainLoss.toFixed(2)}
 			{!!json.stockHoldings && json.stockHoldings.map((stock, index) => {
 				return ( <TouchableOpacity onPress={() => {displayMore(stock)}} key={stock.stockSymbol} style={{backgroundColor: (checkIndexIsEven(index) ? "#ff8a3c" : "#33A5FF"), 	paddingBottom: 10,	borderRadius: 10, width: 250, alignItems: "center", marginTop: 10	}}>
 							<Text style={styles.bold}>{stock.companyName} | {stock.stockSymbol}</Text>
-							<Text>Stock Price: {stock.currentPrice.toFixed(2)}</Text>
+							<Text>Stock Price: $ {stock.currentPrice.toFixed(2)}</Text>
 							<Text>Quantity: {stock.quantity}</Text>
 							<Text>Click for more info</Text>
 						</TouchableOpacity>

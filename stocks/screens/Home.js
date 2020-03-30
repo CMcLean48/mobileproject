@@ -18,13 +18,16 @@ export default function Home({ navigation }) {
     let isActive = true
 
     const getJWT = async () => {
+
     try {
       if(isActive){
         // console.log("inside retrive data");
         const value = await AsyncStorage.getItem("JWT_TOKEN");
+        const exp = await AsyncStorage.getItem("exp")
         if (value !== null) {
           // We have data!!
           console.log('Token Saved as', value);
+          console.log(exp)
           setJWT(value);
           setLoggedIn(true);
         }
@@ -33,6 +36,7 @@ export default function Home({ navigation }) {
       // Error retrieving data
     }
   };
+
 
   getJWT()
 
@@ -47,9 +51,6 @@ export default function Home({ navigation }) {
   const [query, setQuery] = useState("");
   const [JWT, setJWT] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  function goToPortfolio () {
-    navigation.navigate("Portfolio")
-  }
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];
@@ -60,6 +61,10 @@ export default function Home({ navigation }) {
       //console.log(stocks.length);
     });
   };
+
+  function goToPortfolio () {
+    navigation.navigate("Portfolio")
+  }
 
   const searchAPI = async exchangeCode => {
     console.log("CALL");
@@ -115,7 +120,6 @@ export default function Home({ navigation }) {
       {!loggedIn && (
         <Button title="Login" onPress={() => navigation.navigate("Login")} />
       )}
-      {loggedIn && <Button title="Get Secure Data" onPress={() => getData()} />}
       {loggedIn && <Logout getLoggedIn={getLoggedIn} />}
       {loggedIn && <Button title="Portfolio" onPress={() => goToPortfolio()} />}
     </SafeAreaView>
