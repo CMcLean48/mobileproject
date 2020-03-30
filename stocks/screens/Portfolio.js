@@ -13,6 +13,9 @@ import { LineChart } from "react-native-chart-kit";
 import firebase from "../firebase";
 
 export default function Portfolio({ navigation }) {
+  useFocusEffect(
+    React.useCallback(() => {
+      let isActive = true;
 
       // async function getJWT() {
       // try {
