@@ -3,7 +3,10 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import firebase from '../firebase';
 
 export default function Transaction({ navigation, route }) {
-	
+
+  const [value, onChangeText] = useState('');
+  const [balanceValue, onChangeBalanceText] = useState('');
+
 	async function getJWT() {
 		try {
 			console.log('inside retrive data');
@@ -85,7 +88,7 @@ export default function Transaction({ navigation, route }) {
 					Authorization: `Bearer ${await getJWT()}`
 				},
 				body: JSON.stringify({
-					depositWithdrawAmount: balanceValue
+					depositWithdrawAmount: parseInt(balanceValue)
 				})
 			}
 		)
@@ -100,7 +103,8 @@ export default function Transaction({ navigation, route }) {
 				console.log(error);
 			});
 	}
-const [value, balanceValue, onChangeText, onChangeBalanceText] = useState('');
+
+
 	return (
 		<View style={styles.container}>
 			<Text>{route.params.stock}</Text>
@@ -128,7 +132,7 @@ const [value, balanceValue, onChangeText, onChangeBalanceText] = useState('');
 					borderColor: 'gray',
 					borderWidth: 1
 				}}
-				onChangeBalanceText={text => onChangeBalanceText(text)}
+				onChangeText={text => onChangeBalanceText(text)}
 				value={balanceValue}
 			/>
 			<Button title="add to balance" onPress={addBalance} />
@@ -144,9 +148,7 @@ const [value, balanceValue, onChangeText, onChangeBalanceText] = useState('');
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
 		backgroundColor: '#fff',
 		alignItems: 'center',
-		justifyContent: 'center'
 	}
 });
