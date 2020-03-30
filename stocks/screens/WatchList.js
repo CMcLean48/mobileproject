@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   VirtualizedList
 } from "react-native";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useFocusEffect } from "@react-navigation/native";
 
 export default function WatchList({ navigation }) {
@@ -63,6 +64,7 @@ export default function WatchList({ navigation }) {
           alert(stockSymbol + " was deleted from your watch list");
           setRefreshScreen(true);
         } else if (res.status == 401) {
+          console.log("response 401");
           alert("Session time expired. Please log in");
         } else {
           var data = res.json();
@@ -101,7 +103,8 @@ export default function WatchList({ navigation }) {
                 deleteStockFromList(item.stockSymbol);
               }}
             >
-              <Text style={styles.deleteButton}> [X] </Text>
+              {/* <Text style={styles.deleteButton}> [X] </Text> */}
+              <Icon name="delete-forever" size={35} color="red" />
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() =>
