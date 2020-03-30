@@ -1,10 +1,21 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, SafeAreaView, TouchableOpacity, Alert, Dimensions, ScrollView } from 'react-native';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Alert,
+  Dimensions,
+  ScrollView
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { LineChart } from 'react-native-chart-kit';
 import firebase from "../firebase";
 
 export default function Portfolio({ navigation }) {
+  useFocusEffect(
+    React.useCallback(() => {
+      let isActive = true;
 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -25,36 +36,39 @@ export default function Portfolio({ navigation }) {
 			}
 		  }
 
-		  async function getData(isActive) {
-			if (isActive) {
-			  fetch("https://ssdstockappapi.azurewebsites.net/api/Portfolio", {
-				method: "GET",
-				headers: {
-				  Authorization: `Bearer ${await getJWT()}`
-				}
-			  })
-				.then(res => res.json())
-				.then(data => {
-					setjson(data)
-					console.log(data)
-				})
-				.catch(error => {
-				  console.log(error);
-				});
-			}
-		  }
 
-		  getData(isActive).catch(e => {console.error(error)})
+      async function getData(isActive) {
+        if (isActive) {
+          fetch("https://ssdstockappapi.azurewebsites.net/api/Portfolio", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${await getJWT()}`
+            }
+          })
+            .then(res => res.json())
+            .then(data => {
+              setjson(data);
+              console.log(data);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+      }
 
-		  return () => {
-			isActive = false;
-		  };
-		}, [])
-	  );
+      getData(isActive).catch(e => {
+        console.error(error);
+      });
 
-	const [json, setjson] = useState({
-		userEmail: "Loading"
-	  })
+      return () => {
+        isActive = false;
+      };
+    }, [])
+  );
+
+  const [json, setjson] = useState({
+    userEmail: "Loading"
+  });
 
 	function displayMore(stock) {
 		Alert.alert(
@@ -67,27 +81,40 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
 `)
 	}
 
-	const lineData = {
-		labels: ['Week 1 (latest)', 'Week 2', 'Week 3', 'Week 4'],
-		datasets: [
-			{
-				data: json.portfolio30DayHistory ? json.portfolio30DayHistory.map((history) => {if(history.basePortfolioValue) {return (history.snapshotPortfolioValue - history.basePortfolioValue)/history.basePortfolioValue*100}else{return 0}}) : [0],
-				strokeWidth: 4 // optional
-			}
-		],
-		legend: ['percentage gain / loss over 4 weeks  ']
-	};
+  const lineData = {
+    labels: ["Week 1 (latest)", "Week 2", "Week 3", "Week 4"],
+    datasets: [
+      {
+        data: json.portfolio30DayHistory
+          ? json.portfolio30DayHistory.map(history => {
+              if (history.basePortfolioValue) {
+                return (
+                  ((history.snapshotPortfolioValue -
+                    history.basePortfolioValue) /
+                    history.basePortfolioValue) *
+                  100
+                );
+              } else {
+                return 0;
+              }
+            })
+          : [0],
+        strokeWidth: 4 // optional
+      }
+    ],
+    legend: ["percentage gain / loss over 4 weeks  "]
+  };
 
-	const chartConfig = {
-		backgroundColor: '#e26a00',
-		backgroundGradientFrom: '#33A5FF',
-		backgroundGradientTo: '#ffa726',
-		decimalPlaces: 2, // optional, defaults to 2dp
-		color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-		style: {
-			borderRadius: 16
-		}
-	};
+  const chartConfig = {
+    backgroundColor: "#e26a00",
+    backgroundGradientFrom: "#33A5FF",
+    backgroundGradientTo: "#ffa726",
+    decimalPlaces: 2, // optional, defaults to 2dp
+    color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+    style: {
+      borderRadius: 16
+    }
+  };
 
 	return(
 		<SafeAreaView style={styles.container}>
@@ -122,36 +149,36 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
 		</SafeAreaView>);
 }
 
-function checkIndexIsEven (n) {
-    return n % 2 == 0;
+function checkIndexIsEven(n) {
+  return n % 2 == 0;
 }
 
 const styles = StyleSheet.create({
-	container: {
-	  flex: 1,
-	  alignItems: "center",
-	  backgroundColor: "#fff",
-	  justifyContent: "center",
-	},
-	textContainer: {
-		alignItems: "center",
-	},
-	text: {
-		width: "80%",
-		alignItems: "center"
-	},
-	scroll: {
-		marginHorizontal: 0,
-		width: "100%",
-		alignItems: "center"
-	},
-	textBold: {
-		width: "80%",
-		alignItems: "center",
-		fontWeight: "bold"
-	},
-	bold: {
-		paddingTop: 10,
-		fontWeight: "bold"
-	}
-  });
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#fff",
+    justifyContent: "center"
+  },
+  textContainer: {
+    alignItems: "center"
+  },
+  text: {
+    width: "80%",
+    alignItems: "center"
+  },
+  scroll: {
+    marginHorizontal: 0,
+    width: "100%",
+    alignItems: "center"
+  },
+  textBold: {
+    width: "80%",
+    alignItems: "center",
+    fontWeight: "bold"
+  },
+  bold: {
+    paddingTop: 10,
+    fontWeight: "bold"
+  }
+});
