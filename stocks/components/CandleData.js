@@ -1,32 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, Text, View, Dimensions } from 'react-native';
 
-const CandleData = ({ lineData, chartConfig, labels }) => {
-	return (
-		<View style={styles.background}>
-			<LineChart
-				style={styles.lineChart}
-				data={lineData}
-				labels={labels}
-				//	width={Dimensions.get('window').width} // from react-native
-				//	height={220}
-				yAxisLabel={'$'}
-				chartConfig={chartConfig}
-				bezier
-				style={styles.bezier}
-			/>
-		</View>
-	);
-};
-const styles = StyleSheet.create({
-	background: {},
-	lineChart: {
-		height: 220,
-		width: Dimensions.get('window').width
-	},
-	bezier: {
-		marginVertical: 8,
-		borderRadius: 16
-	}
-});
-export default CandleData;
+export const CandleData = ({ lineData, chartConfig, labels }) => {
+	const API_KEY = 'bprd3evrh5r8s3uv7k0g'; //API Key - This should probably be moved to a central file later
+	const [candle, setCandle] = useState(null);
+	var currentDate = Math.round(new Date().getTime() / 1000);
+	let fromDate = currentDate - 2592000;
+
+	const searchAPICandle = async () => {
+		const candleResponse = await finnhub.get(
+			`/stock/candle?symbol=${route.params.stock}&resolution=D&to=${currentDate}&from=${fromDate}&token=${API_KEY}`
+		);
+		//console.log(candleResponse.data);
+		setCandle(candleResponse.data);
+	};
+	useEffect(() => {
+		
+		searchAPICandle();
+		//Get Params from Route
+		//console.log(route.params.stock);
+	}, []);
+
+	return (searchAPICandle);
+};	

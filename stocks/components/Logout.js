@@ -21,7 +21,7 @@ const Logout = (props) => {
     )
 }
 
-clearData = async () => {
+const clearData = async () => {
     try {
       console.log("inside clear data");
       await AsyncStorage.removeItem("JWT_TOKEN");
