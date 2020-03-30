@@ -114,6 +114,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
   };
 
 	return(
+
 		<SafeAreaView style={styles.container}>
 			<LineChart
 					data={lineData}
@@ -127,7 +128,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
 						borderRadius: 16
 					}}
 				/>
-			<ScrollView contentContainerStyle={styles.scroll}>
+      <ScrollView contentContainerStyle={styles.scroll}>
 			<SafeAreaView style={styles.textContainer}>
 			<Text style={styles.textBold}>{json.userEmail}</Text>
 			{!!json.cashBalance && <Text style={styles.text}>Cash Balance: $ {json.cashBalance} USD</Text>}
