@@ -45,11 +45,15 @@ export default function Transaction({navigation, route}) {
 
       async function getSell() {
           fetch("https://ssdstockappapi.azurewebsites.net/api/StockTransaction/sell", {
-            method: "GET",
+            method: "POST",
             headers: {
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${await getJWT()}`
-            }
-          })
+            },
+            body: JSON.stringify({
+              StockSymbol: route.params.stock,
+              quantity: parseInt(value)
+            })
             .then(res => res.json())
             .then(data => {
               console.log(data);
