@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, SafeAreaView, Button } from "react-native";
-import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
 import { useFocusEffect } from "@react-navigation/native";
-//import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
 import Logout from "../components/Logout";
 import firebase from "../firebase";
-import { ScrollView } from "react-native-gesture-handler";
 
 export default function Home({ navigation }) {
   useEffect(() => {
@@ -33,27 +30,7 @@ export default function Home({ navigation }) {
           console.log("Error Checking Logged In User" + error);
         }
       };
-
       getCurrentUser();
-
-      // const getJWT = async () => {
-      //   try {
-      //     if (isActive) {
-      //       // console.log("inside retrive data");
-      //       const value = await AsyncStorage.getItem("JWT_TOKEN");
-      //       if (value !== null) {
-      //         // We have data!!
-      //         console.log("Token Saved as", value);
-      //         setJWT(value);
-      //         setLoggedIn(true);
-      //       }
-      //     }
-      //   } catch (error) {
-      //     // Error retrieving data
-      //   }
-      // };
-
-      // getJWT();
 
       return () => {
         isActive = false;
@@ -94,29 +71,12 @@ export default function Home({ navigation }) {
     );
   };
 
-  function getData() {
-    fetch("https://ssdstockappapi.azurewebsites.net/api/Example/secure", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${JWT}`
-      }
-    })
-      .then(res => res.json())
-      // Data Retrieved.
-      .then(data => {
-        alert(JSON.stringify(data));
-      });
-  }
-
   function getLoggedIn(boolean) {
     setLoggedIn(boolean);
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <Text>TEST</Text> */}
       <SearchBar
         query={query}
         onQueryChange={newQuery => {
