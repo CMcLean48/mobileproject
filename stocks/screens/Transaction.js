@@ -3,9 +3,8 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import firebase from '../firebase';
 
 export default function Transaction({ navigation, route }) {
-
-  const [value, onChangeText] = useState('');
-  const [balanceValue, onChangeBalanceText] = useState('');
+	const [value, onChangeText] = useState('');
+	const [balanceValue, onChangeBalanceText] = useState('');
 
 	async function getJWT() {
 		try {
@@ -42,6 +41,8 @@ export default function Transaction({ navigation, route }) {
 				console.log(data.stockSymbol);
 				if (!data.message) {
 					navigation.navigate('Confirm');
+				} else {
+					alert(data.stockSymbol + ' ' + data.message);
 				}
 			})
 			.catch(error => {
@@ -70,6 +71,8 @@ export default function Transaction({ navigation, route }) {
 				console.log(data);
 				if (!data.message) {
 					navigation.navigate('Confirm');
+				} else {
+					alert(data.stockSymbol + '' + data.message);
 				}
 			})
 			.catch(error => {
@@ -97,13 +100,14 @@ export default function Transaction({ navigation, route }) {
 				console.log(data);
 				if (!data.message) {
 					navigation.navigate('Confirm');
+				} else {
+					alert(data.message);
 				}
 			})
 			.catch(error => {
 				console.log(error);
 			});
 	}
-
 
 	return (
 		<View style={styles.container}>
@@ -149,6 +153,6 @@ export default function Transaction({ navigation, route }) {
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: '#fff',
-		alignItems: 'center',
+		alignItems: 'center'
 	}
 });
