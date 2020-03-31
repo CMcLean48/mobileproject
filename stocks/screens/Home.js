@@ -8,6 +8,11 @@ import Logout from "../components/Logout";
 import firebase from "../firebase";
 
 export default function Home({ navigation }) {
+  const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
+  const [stocks, setStocks] = useState([]);
+  const [query, setQuery] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+
   useEffect(() => {
     // the list of exchanges
     getDataFromAPI(["US", "TO"]);
@@ -15,38 +20,22 @@ export default function Home({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      let isActive = true;
-
-      const getCurrentUser = async () => {
-        try {
-          let currentUser = await firebase.auth().currentUser;
-
-          if (currentUser != null) {
-            setLoggedIn(true);
-          } else {
-            setLoggedIn(false);
-          }
-        } catch (error) {
-          console.log("Error Checking Logged In User" + error);
-        }
-      };
       getCurrentUser();
-
-      return () => {
-        isActive = false;
-      };
     }, [navigation])
   );
 
-  const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
-  const [stocks, setStocks] = useState([]);
-  const [query, setQuery] = useState("");
-  const [JWT, setJWT] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  function goToPortfolio() {
-    navigation.navigate("Portfolio");
-  }
+  const getCurrentUser = async () => {
+    try {
+      let currentUser = await firebase.auth().currentUser;
+      if (currentUser != null) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    } catch (error) {
+      console.log("Error Checking Logged In User" + error);
+    }
+  };
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];
@@ -55,7 +44,6 @@ export default function Home({ navigation }) {
       array = array.concat(response.data);
       var filteredArray = array.filter(el => el.description != "N/A");
       setStocks(filteredArray);
-      //console.log(stocks.length);
     });
   };
 
