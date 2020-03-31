@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
+import { StyleSheet, View, SafeAreaView, Button } from "react-native";
 import { AsyncStorage } from "react-native";
 import finnhub from "../api/finnhub";
 import { useFocusEffect } from "@react-navigation/native";
@@ -115,52 +115,45 @@ export default function Home({ navigation }) {
   }
 
   return (
-		<SafeAreaView style={styles.container}>
-			{/* <Text>TEST</Text> */}
-			<SearchBar
-				query={query}
-				onQueryChange={newQuery => {
-					setQuery(newQuery);
-				}}
-			/>
-			<ShowList
-				navigation={navigation}
-				stocks={stocks.filter(
-					stock =>
-						stock.symbol
-							.toUpperCase()
-							.includes(query.toUpperCase()) ||
-						stock.description
-							.toUpperCase()
-							.includes(query.toUpperCase())
-				)}
-			/>
-			{!loggedIn && (
-				<Button
-					title="Register"
-					onPress={() => navigation.navigate('Register')}
-				/>
-			)}
-			{!loggedIn && (
-				<Button
-					title="Login"
-					onPress={() => navigation.navigate('Login')}
-				/>
-			)}
-			<ScrollView>
-				{loggedIn && <Logout getLoggedIn={getLoggedIn} />}
-				{loggedIn && (
-					<Button title="Portfolio" onPress={() => goToPortfolio()} />
-				)}
-				{loggedIn && (
-					<Button
-						color="#33A5FF"
-						title="WatchList"
-						onPress={() => navigation.navigate('WatchList')}
-					/>
-				)}
-			</ScrollView>
-		</SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      {/* <Text>TEST</Text> */}
+      <SearchBar
+        query={query}
+        onQueryChange={newQuery => {
+          setQuery(newQuery);
+        }}
+      />
+      <ShowList
+        navigation={navigation}
+        stocks={stocks.filter(
+          stock =>
+            stock.symbol.toUpperCase().includes(query.toUpperCase()) ||
+            stock.description.toUpperCase().includes(query.toUpperCase())
+        )}
+      />
+      <View style={styles.btns}>
+        {!loggedIn && (
+          <Button
+            title="Register"
+            onPress={() => navigation.navigate("Register")}
+          />
+        )}
+        {!loggedIn && (
+          <Button title="Login" onPress={() => navigation.navigate("Login")} />
+        )}
+        {loggedIn && (
+          <Button title="Portfolio" onPress={() => goToPortfolio()} />
+        )}
+        {loggedIn && (
+          <Button
+            color="#33A5FF"
+            title="WatchList"
+            onPress={() => navigation.navigate("WatchList")}
+          />
+        )}
+        {loggedIn && <Logout getLoggedIn={getLoggedIn} />}
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -171,8 +164,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  btns:{
-    flexDirection:'row',
-    justifyContent:'space-around'
+  btns: {
+    flexDirection: "row",
+    margin: 10,
+    justifyContent: "space-around"
   }
 });
