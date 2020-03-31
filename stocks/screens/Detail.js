@@ -16,6 +16,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import firebase from "../firebase";
 
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
 
@@ -35,6 +36,7 @@ export default function Detail({ route, navigation }) {
 				setLoggedIn(true);
 			  } else {
 				setLoggedIn(false);
+				console.log(currentUser)
 			  }
 			} catch (error) {
 			  console.log("Error Checking Logged In User" + error);
