@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   Dimensions,
+  Button,
   ScrollView
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
@@ -173,6 +174,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
               </TouchableOpacity>
             );
           })}
+         <Button title="Buy / Sell" onPress={() => {navigation.navigate("Transaction", {stock: "AAPL"})}} />
       </ScrollView>
     </SafeAreaView>
   );
