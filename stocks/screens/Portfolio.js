@@ -116,6 +116,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
     }
   };
 
+
   return (
     <SafeAreaView style={styles.container}>
       <LineChart
@@ -175,6 +176,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
       </ScrollView>
     </SafeAreaView>
   );
+
 }
 
 function checkIndexIsEven(n) {

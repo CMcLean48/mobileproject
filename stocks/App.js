@@ -7,6 +7,8 @@ import Login from "./screens/Login";
 import Portfolio from "./screens/Portfolio";
 import Detail from "./screens/Detail";
 import WatchList from "./screens/WatchList";
+import Transaction from './screens/Transaction';
+import Confirm from './screens/Confirm';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +22,8 @@ const App = () => {
         <Stack.Screen name="Portfolio" component={Portfolio} />
         <Stack.Screen name="Stock Detail" component={Detail} />
         <Stack.Screen name="WatchList" component={WatchList} />
+        <Stack.Screen name="Transaction" component={Transaction} />
+        <Stack.Screen name="Confirm" component={Confirm} />
         {/* <Stack.Screen name="Show List" component={ShowList} /> */}
       </Stack.Navigator>
     </NavigationContainer>
