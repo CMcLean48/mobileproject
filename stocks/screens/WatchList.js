@@ -4,12 +4,12 @@ import {
   Text,
   SafeAreaView,
   View,
-  AsyncStorage,
   TouchableOpacity,
   VirtualizedList
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useFocusEffect } from "@react-navigation/native";
+import firebase from "../firebase";
 
 export default function WatchList({ navigation }) {
   const [watchList, setWatchList] = useState([]);
@@ -24,8 +24,8 @@ export default function WatchList({ navigation }) {
 
   async function getJWT() {
     try {
-      let value = await AsyncStorage.getItem("JWT_TOKEN");
-      if (value !== null) return value;
+      let value = await firebase.auth().currentUser.getIdTokenResult();
+      if (value.token !== null) return value.token;
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +72,6 @@ export default function WatchList({ navigation }) {
         }
       })
       .catch(err => {
-        //alert(err.message);
         console.log(err);
       });
   }
@@ -105,7 +104,6 @@ export default function WatchList({ navigation }) {
                 deleteStockFromList(item.stockSymbol);
               }}
             >
-              {/* <Text style={styles.deleteButton}> [X] </Text> */}
               <Icon name="delete-forever" size={35} color="red" />
             </TouchableOpacity>
             <TouchableOpacity
