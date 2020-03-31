@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -13,80 +13,84 @@ import { useFocusEffect } from "@react-navigation/native";
 import { LineChart } from "react-native-chart-kit";
 import firebase from "../firebase";
 
+
 export default function Portfolio({ navigation }) {
-  useFocusEffect(
-    React.useCallback(() => {
-      let isActive = true;
+	useFocusEffect(
+		React.useCallback(() => {
+			let isActive = true;
 
-      // async function getJWT() {
-      // try {
-      //   console.log("inside retrive data");
-      //   let value = await firebase.auth().currentUser.getIdTokenResult()
-      //   if (value.token !== null) {
-      // 	// We have data!!
-      // 	console.log(value);
-      // 	return value.token;
-      //   }
-      // } catch (error) {
-      //   // Error retrieving data
-      //   console.error(error);
-      // }
-      // }
+			// async function getJWT() {
+			// try {
+			//   console.log("inside retrive data");
+			//   let value = await firebase.auth().currentUser.getIdTokenResult()
+			//   if (value.token !== null) {
+			// 	// We have data!!
+			// 	console.log(value);
+			// 	return value.token;
+			//   }
+			// } catch (error) {
+			//   // Error retrieving data
+			//   console.error(error);
+			// }
+			// }
 
-      async function getData(isActive) {
-        let firebaseToken = await firebase
-          .auth()
-          .currentUser.getIdTokenResult();
+			async function getData(isActive) {
+				let firebaseToken = await firebase
+					.auth()
+					.currentUser.getIdTokenResult();
 
-        if (isActive) {
-          fetch("https://ssdstockappapi.azurewebsites.net/api/Portfolio", {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${firebaseToken.token}`
-            }
-          })
-            .then(res => res.json())
-            .then(data => {
-              setjson(data);
-              console.log(data);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-      }
+				if (isActive) {
+					fetch(
+						'https://ssdstockappapi.azurewebsites.net/api/Portfolio',
+						{
+							method: 'GET',
+							headers: {
+								Authorization: `Bearer ${firebaseToken.token}`
+							}
+						}
+					)
+						.then(res => res.json())
+						.then(data => {
+							setjson(data);
+							console.log(data);
+						})
+						.catch(error => {
+							console.log(error);
+						});
+				}
+			}
 
-      getData(isActive).catch(e => {
-        console.error(error);
-      });
+			getData(isActive).catch(e => {
+				console.error(error);
+			});
 
-      return () => {
-        isActive = false;
-      };
-    }, [])
-  );
+			return () => {
+				isActive = false;
+			};
+		}, [])
+	);
 
-  const [json, setjson] = useState({
-    userEmail: "Loading"
-  });
+	const [json, setjson] = useState({
+		userEmail: 'Loading'
+	});
 
-  function displayMore(stock) {
-    Alert.alert(
-      `${stock.companyName}`,
-      `Avg Cost: $ ${stock.averageCost.toFixed(2)}
+	function displayMore(stock) {
+		Alert.alert(
+			`${stock.companyName}`,
+			`Avg Cost: $ ${stock.averageCost.toFixed(2)}
 Total Cost: $ ${stock.totalCost.toFixed(2)}
 Current Price: $ ${stock.currentPrice.toFixed(2)}
 Current Value: $ ${stock.currentValue.toFixed(2)}
 Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
 `
-    );
-  }
+		);
+	}
 
   const lineData = {
     labels: [],
     datasets: [
       {
-        data: json.portfolio30DayHistory.length != 0
+        data: (json.portfoliio30DayHistory && json.portfolio30DayHistory.length != 0)
           ? json.portfolio30DayHistory.map(history => {
               if (history.basePortfolioValue) {
                 return (
@@ -182,39 +186,38 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
       </ScrollView>
     </SafeAreaView>
   );
-
 }
 
 function checkIndexIsEven(n) {
-  return n % 2 == 0;
+	return n % 2 == 0;
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: "#fff",
-    justifyContent: "center"
-  },
-  textContainer: {
-    alignItems: "center"
-  },
-  text: {
-    width: "80%",
-    alignItems: "center"
-  },
-  scroll: {
-    marginHorizontal: 0,
-    width: "100%",
-    alignItems: "center"
-  },
-  textBold: {
-    width: "80%",
-    alignItems: "center",
-    fontWeight: "bold"
-  },
-  bold: {
-    paddingTop: 10,
-    fontWeight: "bold"
-  }
+	container: {
+		flex: 1,
+		alignItems: 'center',
+		backgroundColor: '#fff',
+		justifyContent: 'center'
+	},
+	textContainer: {
+		alignItems: 'center'
+	},
+	text: {
+		width: '80%',
+		alignItems: 'center'
+	},
+	scroll: {
+		marginHorizontal: 0,
+		width: '100%',
+		alignItems: 'center'
+	},
+	textBold: {
+		width: '80%',
+		alignItems: 'center',
+		fontWeight: 'bold'
+	},
+	bold: {
+		paddingTop: 10,
+		fontWeight: 'bold'
+	}
 });
