@@ -178,7 +178,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
 
             );
           })}
-          {json.stockHoldings.length == 0 && <Button title="Buy / Sell Apple" onPress={() => {navigation.navigate("Transaction", {stock: "AAPL"})}} />}
+          {json.stockHoldings && json.stockHoldings.length == 0 && <Button title="Buy / Sell Apple" onPress={() => {navigation.navigate("Transaction", {stock: "AAPL"})}} />}
       </ScrollView>
     </SafeAreaView>
   );
