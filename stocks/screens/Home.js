@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, SafeAreaView, Button } from "react-native";
-import { AsyncStorage } from "react-native";
+import { StyleSheet, View, SafeAreaView, Button } from "react-native";
 import finnhub from "../api/finnhub";
 import { useFocusEffect } from "@react-navigation/native";
-//import { FINNHUB_API_KEY } from 'react-native-dotenv';
 import SearchBar from "../components/SearchBar";
 import ShowList from "../components/ShowList";
 import Logout from "../components/Logout";
 import firebase from "../firebase";
-import { ScrollView } from "react-native-gesture-handler";
 
 export default function Home({ navigation }) {
+  const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
+  const [stocks, setStocks] = useState([]);
+  const [query, setQuery] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+
   useEffect(() => {
     // the list of exchanges
     getDataFromAPI(["US", "TO"]);
@@ -18,58 +20,22 @@ export default function Home({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      let isActive = true;
-
-      const getCurrentUser = async () => {
-        try {
-          let currentUser = await firebase.auth().currentUser;
-
-          if (currentUser != null) {
-            setLoggedIn(true);
-          } else {
-            setLoggedIn(false);
-          }
-        } catch (error) {
-          console.log("Error Checking Logged In User" + error);
-        }
-      };
-
       getCurrentUser();
-
-      // const getJWT = async () => {
-      //   try {
-      //     if (isActive) {
-      //       // console.log("inside retrive data");
-      //       const value = await AsyncStorage.getItem("JWT_TOKEN");
-      //       if (value !== null) {
-      //         // We have data!!
-      //         console.log("Token Saved as", value);
-      //         setJWT(value);
-      //         setLoggedIn(true);
-      //       }
-      //     }
-      //   } catch (error) {
-      //     // Error retrieving data
-      //   }
-      // };
-
-      // getJWT();
-
-      return () => {
-        isActive = false;
-      };
     }, [navigation])
   );
 
-  const API_KEY = "bprd3evrh5r8s3uv7k0g"; //Add HERE your API-Key
-  const [stocks, setStocks] = useState([]);
-  const [query, setQuery] = useState("");
-  const [JWT, setJWT] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  function goToPortfolio() {
-    navigation.navigate("Portfolio");
-  }
+  const getCurrentUser = async () => {
+    try {
+      let currentUser = await firebase.auth().currentUser;
+      if (currentUser != null) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    } catch (error) {
+      console.log("Error Checking Logged In User" + error);
+    }
+  };
 
   const getDataFromAPI = exchangeCodeArray => {
     var array = [];
@@ -78,7 +44,6 @@ export default function Home({ navigation }) {
       array = array.concat(response.data);
       var filteredArray = array.filter(el => el.description != "N/A");
       setStocks(filteredArray);
-      //console.log(stocks.length);
     });
   };
 
@@ -94,73 +59,49 @@ export default function Home({ navigation }) {
     );
   };
 
-  function getData() {
-    fetch("https://ssdstockappapi.azurewebsites.net/api/Example/secure", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${JWT}`
-      }
-    })
-      .then(res => res.json())
-      // Data Retrieved.
-      .then(data => {
-        alert(JSON.stringify(data));
-      });
-  }
-
   function getLoggedIn(boolean) {
     setLoggedIn(boolean);
   }
 
   return (
-		<SafeAreaView style={styles.container}>
-			{/* <Text>TEST</Text> */}
-			<SearchBar
-				query={query}
-				onQueryChange={newQuery => {
-					setQuery(newQuery);
-				}}
-			/>
-			<ShowList
-				navigation={navigation}
-				stocks={stocks.filter(
-					stock =>
-						stock.symbol
-							.toUpperCase()
-							.includes(query.toUpperCase()) ||
-						stock.description
-							.toUpperCase()
-							.includes(query.toUpperCase())
-				)}
-			/>
-			{!loggedIn && (
-				<Button
-					title="Register"
-					onPress={() => navigation.navigate('Register')}
-				/>
-			)}
-			{!loggedIn && (
-				<Button
-					title="Login"
-					onPress={() => navigation.navigate('Login')}
-				/>
-			)}
-			<ScrollView>
-				{loggedIn && <Logout getLoggedIn={getLoggedIn} />}
-				{loggedIn && (
-					<Button title="Portfolio" onPress={() => goToPortfolio()} />
-				)}
-				{loggedIn && (
-					<Button
-						color="#33A5FF"
-						title="WatchList"
-						onPress={() => navigation.navigate('WatchList')}
-					/>
-				)}
-			</ScrollView>
-		</SafeAreaView>
+    <SafeAreaView style={styles.container}>
+      <SearchBar
+        query={query}
+        onQueryChange={newQuery => {
+          setQuery(newQuery);
+        }}
+      />
+      <ShowList
+        navigation={navigation}
+        stocks={stocks.filter(
+          stock =>
+            stock.symbol.toUpperCase().includes(query.toUpperCase()) ||
+            stock.description.toUpperCase().includes(query.toUpperCase())
+        )}
+      />
+      <View style={styles.btns}>
+        {!loggedIn && (
+          <Button
+            title="Register"
+            onPress={() => navigation.navigate("Register")}
+          />
+        )}
+        {!loggedIn && (
+          <Button title="Login" onPress={() => navigation.navigate("Login")} />
+        )}
+        {loggedIn && (
+          <Button title="Portfolio" onPress={() => goToPortfolio()} />
+        )}
+        {loggedIn && (
+          <Button
+            color="#33A5FF"
+            title="WatchList"
+            onPress={() => navigation.navigate("WatchList")}
+          />
+        )}
+        {loggedIn && <Logout getLoggedIn={getLoggedIn} />}
+      </View>
+    </SafeAreaView>
   );
 }
 
@@ -171,8 +112,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center"
   },
-  btns:{
-    flexDirection:'row',
-    justifyContent:'space-around'
+  btns: {
+    flexDirection: "row",
+    margin: 10,
+    justifyContent: "space-around"
   }
 });
