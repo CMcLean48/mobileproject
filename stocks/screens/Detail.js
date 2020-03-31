@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+
 	StyleSheet,
 	SafeAreaView,
 	Text,
@@ -16,6 +17,7 @@ import { LineChart } from 'react-native-chart-kit';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+
 
 //import { FINNHUB_API_KEY } from 'react-native-dotenv';
 
@@ -40,6 +42,7 @@ export default function Detail({ route, navigation }) {
 			  console.log("Error Checking Logged In User" + error);
 			}
 		  };
+
 
 		  getCurrentUser();
 
@@ -73,6 +76,46 @@ export default function Detail({ route, navigation }) {
 		setQuote(response.data);
 		console.log(response.data);
 	};
+  
+  // async function getJWT() {
+  //   try {
+  //     let value = await AsyncStorage.getItem("JWT_TOKEN");
+  //     if (value !== null) return value;
+  //   } catch (error) {
+  //     //console.error(error);
+  //   }
+  // }
+
+  async function watchStock(stockSymbol) {
+    let JWTtoken = await (await firebase.auth().currentUser.getIdTokenResult())
+      .token;
+    //var JWTtoken = await getJWT();
+    //console.log(JWTtoken);
+    //console.log(stockSymbol);
+    if (JWTtoken !== null) {
+      await fetch("https://ssdstockappapi.azurewebsites.net/api/WatchList", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${JWTtoken}`
+        },
+        body: JSON.stringify({ stockSymbol: stockSymbol })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.stockSymbol == stockSymbol) {
+            alert(data.stockSymbol + "was placed in your watch list");
+          } else {
+            alert("Something went wrong: " + data.message);
+          }
+          //console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
 
 
 
