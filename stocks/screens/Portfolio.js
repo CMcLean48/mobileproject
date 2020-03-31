@@ -86,7 +86,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
     labels: [],
     datasets: [
       {
-        data: json.portfolio30DayHistory
+        data: json.portfolio30DayHistory.length != 0
           ? json.portfolio30DayHistory.map(history => {
               if (history.basePortfolioValue) {
                 return (
@@ -149,6 +149,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
         {!!json.stockHoldings &&
           json.stockHoldings.map((stock, index) => {
             return (
+              <>
               <TouchableOpacity
                 onPress={() => {
                   displayMore(stock);
@@ -172,9 +173,12 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
                 <Text>Quantity: {stock.quantity}</Text>
                 <Text>Click for more info</Text>
               </TouchableOpacity>
+              <Button title="Buy / Sell" onPress={() => {navigation.navigate("Transaction", {stock: stock.stockSymbol})}} />
+              </>
+
             );
           })}
-         <Button title="Buy / Sell" onPress={() => {navigation.navigate("Transaction", {stock: "AAPL"})}} />
+          {json.stockHoldings.length == 0 && <Button title="Buy / Sell Apple" onPress={() => {navigation.navigate("Transaction", {stock: "AAPL"})}} />}
       </ScrollView>
     </SafeAreaView>
   );
