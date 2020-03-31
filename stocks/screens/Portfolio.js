@@ -82,7 +82,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
   }
 
   const lineData = {
-    labels: ["Week 1 (latest)", "Week 2", "Week 3", "Week 4"],
+    labels: [],
     datasets: [
       {
         data: json.portfolio30DayHistory
@@ -115,6 +115,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
       borderRadius: 16
     }
   };
+
 
   return (
     <SafeAreaView style={styles.container}>
@@ -175,6 +176,7 @@ Unrealized Gain/Loss: $ ${stock.unrealizedGainLoss.toFixed(2)}
       </ScrollView>
     </SafeAreaView>
   );
+
 }
 
 function checkIndexIsEven(n) {

@@ -24,13 +24,13 @@ const validationSchema = Yup.object().shape({
 export default function Login({ navigation }) {
   const goToSignup = () => navigation.navigate("Register");
 
-  // async function _storeData(token) {
-  //   try {
-  //     await AsyncStorage.setItem("JWT_TOKEN", token);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
+   async function _storeData(token) {
+     try {
+       await AsyncStorage.setItem("JWT_TOKEN", token);
+     } catch (error) {
+       console.error(error);
+     }
+  }
 
   async function handleSubmit(values) {
     return new Promise(async (resolve, reject) => {
@@ -43,7 +43,7 @@ export default function Login({ navigation }) {
               .auth()
               .currentUser.getIdTokenResult()
               .then(tokenResponse => {
-                // _storeData(tokenResponse.token);
+                 _storeData(tokenResponse.token);
                 resolve();
               })
               .catch(error => reject("Firebase " + error));
