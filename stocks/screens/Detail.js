@@ -27,25 +27,21 @@ export default function Detail({ route, navigation }) {
 		React.useCallback(() => {
 		  let isActive = true;
 
-		  const getJWT = async () => {
+		  const getCurrentUser = async () => {
 			try {
-			  if (isActive) {
-				// console.log("inside retrive data");
-				const value = await AsyncStorage.getItem("JWT_TOKEN");
-				if (value !== null) {
-				  // We have data!!
-				  console.log("Token Saved as", value);
-				  setJWT(value);
-				  setLoggedIn(true);
-				}
+			  let currentUser = await firebase.auth().currentUser;
+
+			  if (currentUser != null) {
+				setLoggedIn(true);
+			  } else {
+				setLoggedIn(false);
 			  }
 			} catch (error) {
-			  // Error retrieving data
+			  console.log("Error Checking Logged In User" + error);
 			}
 		  };
 
-
-		  getJWT();
+		  getCurrentUser();
 
 
 		  return () => {
